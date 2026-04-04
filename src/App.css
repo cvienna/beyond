@@ -1,0 +1,11 @@
+*::selection {
+    background-color: #4791ff40;
+}
+
+#navbar {
+    -webkit-app-region: drag;
+}
+
+#navbar button {
+    -webkit-app-region: no-drag;
+}
