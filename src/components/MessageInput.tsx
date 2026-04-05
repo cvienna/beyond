@@ -3,11 +3,22 @@ import { useState } from "react";
 import { ArrowUp, Plus, Search } from "lucide-react";
 import MetaLogo from "../assets/meta.svg?url";
 
-const MessageInput = () => {
+const MessageInput = ({
+  size,
+  inline = false,
+}: {
+  size: "sm" | "md" | "lg";
+  inline?: boolean;
+}) => {
   const [search, setSearch] = useState(true);
 
   return (
-    <div className="flex flex-col max-w-150 w-full bg-neutral-50 rounded-[28px] border border-neutral-200 cursor-text">
+    <div
+      className={`flex flex-col w-full bg-neutral-50 rounded-[28px] border border-neutral-200 cursor-text
+        ${inline && "-mt-6.5 mb-4"}
+        ${size === "lg" ? "lg:max-w-3xl md:max-w-2xl max-w-xl" : size === "md" ? "md:max-w-2xl max-w-xl" : "max-w-xl"}
+      `}
+    >
       <div className="">
         <textarea
           placeholder="Search..."

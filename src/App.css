@@ -2,10 +2,10 @@
     background-color: #4791ff40;
 }
 
-#navbar {
+#draggable {
     -webkit-app-region: drag;
 }
 
-#navbar button {
+#draggable button {
     -webkit-app-region: no-drag;
 }
