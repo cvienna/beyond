@@ -45,6 +45,7 @@ const Sidebar = ({
       </div>
       <div className="h-8" />
       <div className="px-2">
+        {/* TODO - Chat items have an awkward height, caused by emoji icon being too tall - fix somehow */}
         {chats.map((c) => (
           <button
             key={c.id}
