@@ -6,6 +6,12 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+      "@server": path.resolve(__dirname, "server"),
+    },
+  },
   plugins: [
     react(),
     tailwindcss(),
@@ -13,6 +19,13 @@ export default defineConfig({
       main: {
         // Shortcut of `build.lib.entry`.
         entry: "electron/main.ts",
+        vite: {
+          resolve: {
+            alias: {
+              "@server": path.resolve(__dirname, "server"),
+            },
+          },
+        },
       },
       preload: {
         // Shortcut of `build.rollupOptions.input`.
