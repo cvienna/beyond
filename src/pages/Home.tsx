@@ -6,7 +6,7 @@ const Home = () => {
     <>
       <div className="flex flex-col gap-10 justify-center items-center h-full w-full">
         <Greeting />
-        <MessageInput size="md" />
+        <MessageInput size="sm" />
       </div>
       <div style={{ height: `${16 * 2 + 14}px` }} />
     </>
