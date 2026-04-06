@@ -1,3 +1,4 @@
+import { startServer } from "@server/index";
 import { app, BrowserWindow, nativeTheme } from "electron";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
@@ -73,4 +74,6 @@ app.on("activate", () => {
   }
 });
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  (startServer(), createWindow());
+});
