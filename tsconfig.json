@@ -9,6 +9,7 @@
     "paths": {
       "@/*": ["src/*"],
       "@server/*": ["server/*"],
+      "@shared/*": ["shared/*"],
     },
 
     /* Bundler mode */
@@ -25,6 +26,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
   },
-  "include": ["src", "electron", "server"],
+  "include": ["src", "electron", "server", "shared"],
   "references": [{ "path": "./tsconfig.node.json" }],
 }

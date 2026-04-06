@@ -1,5 +1,5 @@
 import { MessageCircle, Plus, Search } from "lucide-react";
-import { Chat, Pages } from "../types";
+import { Chat, Pages } from "@shared/types";
 
 const Sidebar = ({
   page,

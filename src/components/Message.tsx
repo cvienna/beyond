@@ -1,4 +1,4 @@
-import type { Message } from "../types";
+import type { Message } from "@shared/types";
 
 const Message = ({ data }: { data: Message }) => {
   return (

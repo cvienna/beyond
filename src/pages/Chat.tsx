@@ -1,7 +1,7 @@
 import Message from "../components/Message";
 import MessageInput from "../components/MessageInput";
-import { constants } from "../constants";
-import type { Chat } from "../types";
+import { constants } from "@shared/constants";
+import type { Chat } from "@shared/types";
 
 const Chat = ({ id }: { id: string }) => {
   // getChatById

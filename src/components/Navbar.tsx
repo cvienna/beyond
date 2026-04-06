@@ -1,6 +1,6 @@
 import { SidebarIcon, SquarePen } from "lucide-react";
-import { constants } from "../constants";
-import { Pages } from "../types";
+import { constants } from "@shared/constants";
+import { Pages } from "@shared/types";
 
 const Navbar = ({
   handleSidebar,
