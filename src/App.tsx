@@ -4,7 +4,7 @@ import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Chat from "./pages/Chat";
-import { Pages } from "./types";
+import { Pages } from "@shared/types";
 
 function App() {
   const [page, setPage] = useState<{
