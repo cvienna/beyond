@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 import { useUiStore } from "@/store/ui";
 import { useChatStore } from "@/store/chat";
-import { Chat } from "@server/schemas/chat";
 import { useMessageInputStore } from "@/store/messageInput";
 import { client } from "@/lib/client";
 import { chatResponseSchema } from "@shared/schemas/chat";
