@@ -65,7 +65,10 @@ const Message = ({
           )}
           <span className="font-light">{data.content}</span>
           <div
-            className={`flex items-center justify-start gap-2 transition-opacity ${!isLast && "opacity-0 group-hover:opacity-100"}`}
+            className={`flex items-center justify-start gap-2 opacity-0 transition-opacity
+              ${isLast && (data.completionTokens || data.ttft || data.duration) && "opacity-100"}
+              ${!isLast && "group-hover:opacity-100"}
+            `}
           >
             <button
               onClick={() => navigator.clipboard.writeText(data.content)}
@@ -80,8 +83,9 @@ const Message = ({
               <ThumbsDown className="size-4.5 text-neutral-600" />
             </button>
             <span className="pl-1 text-sm text-neutral-600">
-              {data.duration}s · {(data.tokens! / data.duration!).toFixed(2)}{" "}
-              tok/s · {data.tokens} tokens
+              {data.duration}s ·{" "}
+              {(data.completionTokens! / data.duration!).toFixed(2)} tok/s ·{" "}
+              {data.completionTokens} tokens
             </span>
           </div>
         </div>

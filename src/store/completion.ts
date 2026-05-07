@@ -57,8 +57,10 @@ export const useCompletionStore = create<CompletionState>(() => {
               reasoningContent: null,
               role: event.data.delta.role, // "assistant"
               model: event.data.model,
+              promptTokens: null,
+              completionTokens: null,
               duration: null,
-              tokens: null,
+              ttft: null,
               feedback: null,
               createdAt: event.data.createdAt,
               updatedAt: event.data.createdAt,
@@ -81,12 +83,10 @@ export const useCompletionStore = create<CompletionState>(() => {
               activeStreams[event.data.id].chatId,
               activeStreams[event.data.id].messageId!,
               {
-                tokens: event.data.usage.completionTokens,
+                promptTokens: event.data.usage.promptTokens,
+                completionTokens: event.data.usage.completionTokens,
                 duration: event.data.usage.duration,
-                // TODO:
-                // ttft
-                // promptTokens
-                // completionTokens
+                ttft: event.data.usage.ttft,
               },
             );
             removeStream(event.data.id);

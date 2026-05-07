@@ -23,9 +23,9 @@ export const message = messageSchema.table("message", {
   content: text("content").notNull(),
   reasoningContent: text("reasoning_content"),
   role: roleEnum().notNull(),
-  model: text("model").notNull(), // nullable?
-  promptTokens: integer("tokens"),
-  completionTokens: integer("tokens"),
+  model: text("model").notNull(), // nullable for users?
+  promptTokens: integer("prompt_tokens"),
+  completionTokens: integer("completion_tokens"),
   ttft: real("ttft"),
   duration: real("duration"),
   feedback: jsonb("feedback").$type<{
