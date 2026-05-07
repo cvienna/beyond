@@ -24,7 +24,9 @@ export const message = messageSchema.table("message", {
   reasoningContent: text("reasoning_content"),
   role: roleEnum().notNull(),
   model: text("model").notNull(), // nullable?
-  tokens: integer("tokens"),
+  promptTokens: integer("tokens"),
+  completionTokens: integer("tokens"),
+  ttft: real("ttft"),
   duration: real("duration"),
   feedback: jsonb("feedback").$type<{
     review: "good" | "bad";
@@ -39,7 +41,9 @@ export const insertMessageSchema = createInsertSchema(message, {
   reasoningContent: z.string().optional(),
   role: z.enum(["user", "assistant"]),
   model: z.string(),
-  tokens: z.number().optional(),
+  promptTokens: z.number().optional(),
+  completionTokens: z.number().optional(),
+  ttft: z.number().optional(),
   duration: z.number().optional(),
   feedback: z
     .object({ review: z.enum(["good", "bad"]), note: z.string().optional() })
@@ -49,7 +53,9 @@ export const insertMessageSchema = createInsertSchema(message, {
   reasoningContent: true,
   role: true,
   model: true,
-  tokens: true,
+  promptTokens: true,
+  completionTokens: true,
+  ttft: true,
   duration: true,
   feedback: true,
 });
