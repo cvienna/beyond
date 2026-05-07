@@ -1,75 +1,152 @@
-import { zValidator } from "@hono/zod-validator";
-import { streamSSE } from "hono/streaming";
 import { Hono } from "hono";
+
+import { streamSSE } from "hono/streaming";
+import { writeSSE } from "@server/response";
+
 import z from "zod";
-import { streamCompletion } from "@server/services/completion";
-import { sendSSE } from "@server/response";
+import { zValidator } from "@hono/zod-validator";
+
+import { streamText } from "ai";
+import { aiGateway } from "@server/lib/aiGateway";
+
+import { createChat } from "@server/repository/chats";
 import { createMessage, getMessagesByChat } from "@server/repository/message";
-import { createChat } from "@server/repository/chat";
-import { AppError } from "@server/errors";
-import OpenAI from "openai";
-import { Chat } from "@server/schemas/chat";
+import { Chat } from "@server/schemas/chats";
+import { ModelId } from "@shared/models";
 
-const completion = new Hono();
+const app = new Hono();
 
-completion.post(
-  "/:id",
-  zValidator("param", z.object({ id: z.uuid() })),
+app.post(
+  "/",
   zValidator(
     "json",
-    z.object({ prompt: z.string(), model: z.enum(["llama-3.2-3b"]) }),
+    z.object({
+      chatId: z.uuid().optional(),
+      model: z.string() as z.ZodType<ModelId>,
+      createdAt: z.iso.datetime(),
+      prompt: z.string(),
+    }),
   ),
   async (c) => {
-    const { id } = c.req.valid("param");
-    const { prompt, model } = c.req.valid("json");
+    const { chatId, model, createdAt, prompt } = c.req.valid("json");
 
-    let chatId = id;
+    const completionId = crypto.randomUUID();
+
     let chat: Chat | null = null;
-    const messages = await getMessagesByChat(id);
-
-    if (messages.length === 0) {
-      chat = await createChat({
-        title: "Lorem ipsum, dolor sit amet.",
-        icon: "🪼",
-      });
-
-      if (!chat) throw new AppError(500, "Failed to create chat");
-      chatId = chat.id;
-    }
-
-    const userMessage = await createMessage({
-      chatId,
-      content: prompt,
-      from: "user",
-    });
-    if (!userMessage) throw new AppError(500, "Failed to create message");
-
-    const allMessages: OpenAI.ChatCompletionMessageParam[] = [
-      ...messages.map((m) => ({
-        role: m.from as "user" | "assistant",
-        content: m.content,
-      })),
-      { role: "user" as const, content: prompt },
+    let messages: { role: "user" | "assistant"; content: string }[] = [
+      { role: "user", content: prompt },
     ];
 
-    let assistantResponse = "";
+    if (chatId) {
+      const rawMessages = await getMessagesByChat(chatId);
+      messages = [
+        ...(rawMessages as { role: "assistant" | "user"; content: string }[]),
+        ...messages,
+      ];
+    } else {
+      chat = await createChat({
+        title: "Untitled",
+        icon: "🪼",
+      });
+    }
 
-    return streamSSE(c, async (stream) => {
-      if (chat) await sendSSE(stream, "created", { chat });
+    const newMessage = await createMessage({
+      chatId: chatId ? chatId : (chat?.id ?? ""),
+      model,
+      role: "user",
+      content: prompt,
+      createdAt: new Date(createdAt),
+      updatedAt: new Date(createdAt),
+    });
 
-      for await (const chunk of streamCompletion(allMessages, model)) {
-        assistantResponse += chunk;
-        await sendSSE(stream, "chunk", { chunk });
+    const result = streamText({
+      model: aiGateway("accounts/fireworks/models/gpt-oss-20b"),
+      messages,
+    });
+
+    const start = Date.now();
+    let ttft: number | null = null;
+    let content: string = "";
+    let reasoningContent: string | null = null;
+
+    return streamSSE(c, async (s) => {
+      if (chat) {
+        await writeSSE(s, {
+          event: "chat.create",
+          data: { ...chat, completionId },
+        });
       }
 
-      await sendSSE(stream, "done", {});
-      await createMessage({
-        chatId,
-        content: assistantResponse,
-        from: "assistant",
-      });
+      for await (const chunk of result.fullStream) {
+        if (chunk.type === "start") {
+          await writeSSE(s, {
+            event: "chat.message.create",
+            data: { ...newMessage, completionId },
+          });
+          await writeSSE(s, {
+            event: "chat.completion.start",
+            data: {
+              id: completionId,
+              createdAt: new Date(start),
+              model,
+              delta: { role: "assistant" },
+            },
+          });
+        } else if (chunk.type === "reasoning-delta") {
+          if (!ttft) ttft = Date.now() - start;
+          reasoningContent = (reasoningContent ?? "") + chunk.text;
+
+          await writeSSE(s, {
+            event: "chat.completion.chunk",
+            data: {
+              id: completionId,
+              delta: {
+                reasoningContent: chunk.text,
+              },
+            },
+          });
+        } else if (chunk.type === "text-delta") {
+          if (!ttft) ttft = Date.now() - start;
+          content = content + chunk.text;
+
+          await writeSSE(s, {
+            event: "chat.completion.chunk",
+            data: {
+              id: completionId,
+              delta: {
+                content: chunk.text,
+              },
+            },
+          });
+        } else if (chunk.type === "finish") {
+          const now = Date.now();
+
+          await writeSSE(s, {
+            event: "chat.completion.stop",
+            data: {
+              id: completionId,
+              usage: {
+                promptTokens: chunk.totalUsage.inputTokens!,
+                completionTokens: chunk.totalUsage.outputTokens!,
+                duration: (now - start - (ttft ?? 0)) / 1000,
+                ttft: (ttft ?? 0) / 1000,
+              },
+            },
+          });
+          await createMessage({
+            id: completionId,
+            chatId: chatId ? chatId : (chat?.id ?? ""),
+            content,
+            reasoningContent,
+            role: "assistant",
+            model,
+            tokens: chunk.totalUsage.outputTokens!,
+            duration: (now - start - (ttft ?? 0)) / 1000,
+          });
+        }
+      }
     });
   },
 );
 
-export default completion;
+export default app;

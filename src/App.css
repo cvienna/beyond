@@ -9,3 +9,7 @@
 #draggable button {
     -webkit-app-region: no-drag;
 }
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}

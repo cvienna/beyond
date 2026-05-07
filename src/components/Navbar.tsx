@@ -1,20 +1,10 @@
 import { SidebarIcon, SquarePen } from "lucide-react";
 import { constants } from "@shared/constants";
-import { Pages } from "@shared/types";
+import { useUiStore } from "@/store/ui";
 
-const Navbar = ({
-  handleSidebar,
-  isSidebar,
-  page,
-  handlePage,
-  width,
-}: {
-  handleSidebar: () => void;
-  isSidebar: boolean;
-  page: Pages;
-  handlePage: ({ name, id }: { name: Pages; id: string | null }) => void;
-  width: number;
-}) => {
+const Navbar = ({ width }: { width: number }) => {
+  const { route, navigate, sidebar, toggleSidebar } = useUiStore();
+
   const trafficLightOffset =
     constants.trafficLight.position.x +
     3 * constants.trafficLight.diameter +
@@ -33,28 +23,34 @@ const Navbar = ({
       }}
     >
       <div
-        className={`flex items-center gap-1 px-1.5 ${isSidebar ? "justify-end" : "justify-start"}`}
+        className={`flex items-center gap-1 px-1.5 ${sidebar ? "justify-end" : "justify-start"}`}
         style={
-          isSidebar
+          sidebar
             ? { width: `${width - trafficLightOffset}px` }
             : { width: "100%" }
         }
       >
         <button
-          onClick={handleSidebar}
+          onClick={toggleSidebar}
           className="p-1.5 rounded-full hover:bg-neutral-200/60 transition-colors"
         >
           <SidebarIcon className="size-4.5" />
         </button>
-        {!isSidebar && page !== "home" && (
+        {!sidebar && route.page !== "home" && (
           <>
             <button className="p-1.5 rounded-full hover:bg-neutral-200/60 transition-colors">
               <SquarePen
-                onClick={() => handlePage({ name: "home", id: null })}
+                onClick={() => navigate({ page: "home" })}
                 className="size-4.5"
               />
             </button>
-            <span className="pl-1 text-neutral-500">Untitled</span>
+            <span
+              className={`pl-1 text-sm
+              ${"text-neutral-500"}
+            `}
+            >
+              {"Untitled"}
+            </span>
           </>
         )}
       </div>

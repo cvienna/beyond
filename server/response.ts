@@ -1,5 +1,6 @@
 import { Context } from "hono";
 import { ContentfulStatusCode } from "hono/utils/http-status";
+import type { ChatEvent, ChatMessageEvent, ChatCompletionEvent } from "./types";
 import { SSEStreamingApi } from "hono/streaming";
 
 export function ok<T>(
@@ -10,13 +11,12 @@ export function ok<T>(
   return c.json({ sucess: true, data }, statusCode);
 }
 
-export async function sendSSE(
+export async function writeSSE(
   stream: SSEStreamingApi,
-  event: "created" | "chunk" | "done",
-  data?: Record<string, unknown>,
+  data: ChatEvent | ChatMessageEvent | ChatCompletionEvent,
 ) {
   await stream.writeSSE({
-    event,
-    data: JSON.stringify({ success: true, ...data }),
+    event: data.event,
+    data: JSON.stringify(data.data),
   });
 }

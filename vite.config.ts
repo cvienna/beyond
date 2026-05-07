@@ -18,13 +18,17 @@ export default defineConfig({
     tailwindcss(),
     electron({
       main: {
-        // Shortcut of `build.lib.entry`.
         entry: "electron/main.ts",
         vite: {
           resolve: {
             alias: {
               "@server": path.resolve(__dirname, "server"),
               "@shared": path.resolve(__dirname, "shared"),
+            },
+          },
+          build: {
+            rollupOptions: {
+              external: ["pg-native", "pg"],
             },
           },
         },

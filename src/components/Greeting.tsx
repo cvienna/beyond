@@ -12,7 +12,9 @@ const Greeting = () => {
     greeting = "Good evening.";
   }
 
-  return <span className="text-[40px] font-hahmlet">{greeting}</span>;
+  return (
+    <span className="text-[40px] font-hahmlet select-none">{greeting}</span>
+  );
 };
 
 export default Greeting;

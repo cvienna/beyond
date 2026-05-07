@@ -5,7 +5,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: beyond-dev
+      POSTGRES_DB: ${DATABASE_NAME}
     ports:
       - "${DATABASE_PORT}:5432"
     volumes:
@@ -17,7 +17,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: beyond-test
+      POSTGRES_DB: ${TEST_DATABASE_NAME}
     ports:
       - "${TEST_DATABASE_PORT}:5432"
     volumes:

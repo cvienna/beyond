@@ -1,33 +1,58 @@
-import { pgSchema, uuid, text, timestamp, pgEnum } from "drizzle-orm/pg-core";
+import {
+  pgSchema,
+  uuid,
+  text,
+  timestamp,
+  integer,
+  real,
+  jsonb,
+} from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import z from "zod";
-import { chat } from "./chat";
+import { chats } from "./chats";
 
 export const messageSchema = pgSchema("message");
 
-const fromEnum = pgEnum("fromEnum", ["user", "assistant"]);
+export const roleEnum = messageSchema.enum("role", ["user", "assistant"]);
 
 export const message = messageSchema.table("message", {
   id: uuid("id").primaryKey().defaultRandom(),
-  chatId: text("chatId")
+  chatId: uuid("chatId")
     .notNull()
-    .references(() => chat.id, { onDelete: "cascade" }),
+    .references(() => chats.id, { onDelete: "cascade" }),
   content: text("content").notNull(),
-  from: fromEnum("from").notNull(),
-  /*
-  ttft (time to first token)
-  duration (time it took to complete)
-  tokens (amount generated)
-
-  sources (from search)
-  */
+  reasoningContent: text("reasoning_content"),
+  role: roleEnum().notNull(),
+  model: text("model").notNull(), // nullable?
+  tokens: integer("tokens"),
+  duration: real("duration"),
+  feedback: jsonb("feedback").$type<{
+    review: "good" | "bad";
+    note?: string;
+  }>(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
 export const insertMessageSchema = createInsertSchema(message, {
   content: z.string().min(1),
-  from: z.string(),
-}).pick({ content: true, from: true });
+  reasoningContent: z.string().optional(),
+  role: z.enum(["user", "assistant"]),
+  model: z.string(),
+  tokens: z.number().optional(),
+  duration: z.number().optional(),
+  feedback: z
+    .object({ review: z.enum(["good", "bad"]), note: z.string().optional() })
+    .optional(),
+}).pick({
+  content: true,
+  reasoningContent: true,
+  role: true,
+  model: true,
+  tokens: true,
+  duration: true,
+  feedback: true,
+});
 
 export const updateMessageSchema = insertMessageSchema.partial();
 

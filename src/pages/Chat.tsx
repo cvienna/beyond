@@ -1,14 +1,35 @@
-import Message from "../components/Message";
+import Message from "@/components/Message";
 import MessageInput from "../components/MessageInput";
 import { constants } from "@shared/constants";
-import type { Chat } from "@shared/types";
+import { useChatStore } from "@/store/chat";
+import { useUiStore } from "@/store/ui";
+import { useEffect } from "react";
+import { Message as MessageData } from "@server/schemas/message";
 
-const Chat = ({ id }: { id: string }) => {
-  // getChatById
-  // getMessagesByChat
+const Chat = () => {
+  const { messages, setMessages } = useChatStore();
+  const { route } = useUiStore();
 
   const navbarHeight =
     constants.trafficLight.position.y * 2 + constants.trafficLight.diameter;
+
+  useEffect(() => {
+    if (route.page !== "chat") return;
+    if (useChatStore.getState().messages[route.chatId]) return;
+
+    const fetchMessages = async () => {
+      const res = await fetch(
+        `${import.meta.env.VITE_BASE_URL}/api/message/${route.chatId}`,
+      );
+      const data: MessageData[] = (await res.json()).data;
+
+      setMessages(route.chatId, data);
+    };
+
+    fetchMessages();
+  }, [route]);
+
+  if (route.page !== "chat") return;
 
   return (
     <>
@@ -24,30 +45,10 @@ const Chat = ({ id }: { id: string }) => {
         </div>
 
         <div className="flex flex-col flex-1 gap-8 pb-24">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <>
-              <Message
-                data={{
-                  id: "msg-" + (i * 2 - 1).toString(),
-                  chatId: "chat-a",
-                  from: "user",
-                  content:
-                    "What is the difference between Overfitting and Catastrophic forgetting in Ai terms?",
-                  createdAt: new Date(),
-                }}
-              />
-              <Message
-                data={{
-                  id: "msg-" + (i * 2).toString(),
-                  chatId: "chat-a",
-                  from: "assistant",
-                  content:
-                    "Overfitting is when the model memorizies it's training data - often happens when:\n* there are too many epochs\n* too high learning rate\n* poor data quality.\nCatastrophic forgetting is when the Ai model forgets previously learned data from being trained too aggressively.\nTLDR: Overfitting = Model memorizes data instead of learning patterns.\nCatastrophic forgetting = Model trained too hard and forgets previous knowledge",
-                  createdAt: new Date(),
-                }}
-              />
-            </>
-          ))}
+          {messages[route.chatId] &&
+            messages[route.chatId].map((m, i, arr) => (
+              <Message data={m} isLast={i === arr.length - 1} />
+            ))}
         </div>
         <div className="sticky bottom-0 flex bg-white">
           <MessageInput size="lg" inline />
