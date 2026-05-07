@@ -4,6 +4,7 @@ import type {
   ChatMessageEvent,
 } from "@server/types";
 import { ModelId } from "@shared/models";
+import { client } from "./client";
 
 export async function streamCompletion(
   body: {
@@ -14,11 +15,7 @@ export async function streamCompletion(
   },
   onEvent: (event: ChatEvent | ChatMessageEvent | ChatCompletionEvent) => void,
 ) {
-  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/completion`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
+  const res = await client.api.completion.$post({ json: body });
 
   const reader = res.body!.getReader();
   const decoder = new TextDecoder();

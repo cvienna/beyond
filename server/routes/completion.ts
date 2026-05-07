@@ -14,9 +14,7 @@ import { createMessage, getMessagesByChat } from "@server/repository/message";
 import { Chat } from "@server/schemas/chat";
 import { ModelId } from "@shared/models";
 
-const app = new Hono();
-
-app.post(
+const app = new Hono().post(
   "/",
   zValidator(
     "json",

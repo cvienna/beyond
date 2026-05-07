@@ -4,7 +4,8 @@ import { constants } from "@shared/constants";
 import { useChatStore } from "@/store/chat";
 import { useUiStore } from "@/store/ui";
 import { useEffect } from "react";
-import { Message as MessageData } from "@server/schemas/message";
+import { client } from "@/lib/client";
+import { messageResponseSchema } from "@shared/schemas/message";
 
 const Chat = () => {
   const { messages, setMessages } = useChatStore();
@@ -18,12 +19,13 @@ const Chat = () => {
     if (useChatStore.getState().messages[route.chatId]) return;
 
     const fetchMessages = async () => {
-      const res = await fetch(
-        `${import.meta.env.VITE_BASE_URL}/api/message/${route.chatId}`,
-      );
-      const data: MessageData[] = (await res.json()).data;
+      const res = await client.api.message[":id"].$get({
+        param: { id: route.chatId },
+      });
+      const data = (await res.json()).data;
+      const parsed = messageResponseSchema.array().parse(data);
 
-      setMessages(route.chatId, data);
+      setMessages(route.chatId, parsed);
     };
 
     fetchMessages();

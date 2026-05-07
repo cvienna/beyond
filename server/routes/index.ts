@@ -1,12 +1,12 @@
 import { Hono } from "hono";
-import chats from "./chat";
+import chat from "./chat";
 import message from "./message";
 import completion from "./completion";
 
-const app = new Hono();
+const app = new Hono()
+  .route("/chat", chat)
+  .route("/message", message)
+  .route("/completion", completion);
 
-app.route("/chat", chats);
-app.route("/message", message);
-app.route("/completion", completion);
-
+export type AppRoutes = typeof app;
 export default app;

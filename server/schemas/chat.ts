@@ -21,7 +21,7 @@ export const insertChatSchema = createInsertSchema(chat, {
 
 export const updateChatSchema = insertChatSchema.partial();
 
-export const selectChatsSchema = createSelectSchema(chat);
+export const selectChatSchema = createSelectSchema(chat);
 
 export type Chat = typeof chat.$inferSelect;
 export type NewChat = typeof chat.$inferInsert;

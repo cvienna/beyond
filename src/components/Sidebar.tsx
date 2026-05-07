@@ -13,6 +13,8 @@ import { useUiStore } from "@/store/ui";
 import { useChatStore } from "@/store/chat";
 import { Chat } from "@server/schemas/chat";
 import { useMessageInputStore } from "@/store/messageInput";
+import { client } from "@/lib/client";
+import { chatResponseSchema } from "@shared/schemas/chat";
 
 const Sidebar = () => {
   const { route, navigate } = useUiStore();
@@ -24,11 +26,12 @@ const Sidebar = () => {
   // Fetch chats from API
   useEffect(() => {
     const fetchChats = async () => {
-      const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/chat`);
-      const data: Chat[] = (await res.json()).data;
+      const res = await client.api.chat.$get();
+      const data = (await res.json()).data;
+      const parsed = chatResponseSchema.array().parse(data);
 
-      setChats(data);
-      setRecords(data);
+      setChats(parsed);
+      setRecords(parsed);
     };
 
     fetchChats();
@@ -44,19 +47,13 @@ const Sidebar = () => {
   const handleUpdateChat = async (id: string, data: Partial<object>) => {
     updateChat(id, data);
 
-    await fetch(`${import.meta.env.VITE_BASE_URL}/api/chat/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+    await client.api.chat[":id"].$patch({ param: { id }, json: data });
   };
 
   const handleDeleteChat = async (id: string) => {
     removeChat(id);
 
-    await fetch(`${import.meta.env.VITE_BASE_URL}/api/chat/${id}`, {
-      method: "DELETE",
-    });
+    await client.api.chat[":id"].$delete({ param: { id } });
   };
 
   return (
