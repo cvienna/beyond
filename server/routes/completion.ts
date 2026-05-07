@@ -137,7 +137,9 @@ app.post(
             reasoningContent,
             role: "assistant",
             model,
-            tokens: chunk.totalUsage.outputTokens!,
+            promptTokens: chunk.totalUsage.inputTokens!,
+            completionTokens: chunk.totalUsage.outputTokens!,
+            ttft: ttft,
             duration: (now - start - (ttft ?? 0)) / 1000,
           });
         }
