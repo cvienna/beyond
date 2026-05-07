@@ -23,12 +23,11 @@ app.post(
     z.object({
       chatId: z.uuid().optional(),
       model: z.string() as z.ZodType<ModelId>,
-      createdAt: z.iso.datetime(),
       prompt: z.string(),
     }),
   ),
   async (c) => {
-    const { chatId, model, createdAt, prompt } = c.req.valid("json");
+    const { chatId, model, prompt } = c.req.valid("json");
 
     const completionId = crypto.randomUUID();
 
@@ -55,8 +54,6 @@ app.post(
       model,
       role: "user",
       content: prompt,
-      createdAt: new Date(createdAt),
-      updatedAt: new Date(createdAt),
     });
 
     const result = streamText({

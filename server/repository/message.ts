@@ -19,10 +19,7 @@ Create and returns a single new message.
 @param data - NewMessage object
  */
 export async function createMessage(data: NewMessage) {
-  const result = await db
-    .insert(message)
-    .values({ ...data, createdAt: new Date() })
-    .returning();
+  const result = await db.insert(message).values(data).returning();
 
   return result[0] ?? null;
 }
