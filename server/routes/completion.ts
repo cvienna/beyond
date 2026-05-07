@@ -9,9 +9,9 @@ import { zValidator } from "@hono/zod-validator";
 import { streamText } from "ai";
 import { aiGateway } from "@server/lib/aiGateway";
 
-import { createChat } from "@server/repository/chats";
+import { createChat } from "@server/repository/chat";
 import { createMessage, getMessagesByChat } from "@server/repository/message";
-import { Chat } from "@server/schemas/chats";
+import { Chat } from "@server/schemas/chat";
 import { ModelId } from "@shared/models";
 
 const app = new Hono();

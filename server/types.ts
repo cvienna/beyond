@@ -1,4 +1,4 @@
-import { Chat } from "./schemas/chats";
+import { Chat } from "./schemas/chat";
 import { Message } from "./schemas/message";
 
 export type ChatEvent = {

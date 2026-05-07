@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { useUiStore } from "@/store/ui";
 import { useChatStore } from "@/store/chat";
-import { Chat } from "@server/schemas/chats";
+import { Chat } from "@server/schemas/chat";
 import { useMessageInputStore } from "@/store/messageInput";
 
 const Sidebar = () => {

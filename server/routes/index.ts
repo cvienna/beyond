@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import chats from "./chats";
+import chats from "./chat";
 import message from "./message";
 import completion from "./completion";
 

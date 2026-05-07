@@ -1,4 +1,4 @@
-import { Chat } from "@server/schemas/chats";
+import { Chat } from "@server/schemas/chat";
 import { defaultModel, ModelId } from "@shared/models";
 import { create } from "zustand";
 

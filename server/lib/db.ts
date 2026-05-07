@@ -1,6 +1,6 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import * as chatSchema from "@server/schemas/chats";
+import * as chatSchema from "@server/schemas/chat";
 import * as messageSchema from "@server/schemas/message";
 import { env } from "@shared/env";
 

@@ -4,13 +4,13 @@ import {
   getChats,
   softDeleteChat,
   updateChat,
-} from "@server/repository/chats";
+} from "@server/repository/chat";
 import { ok } from "@server/response";
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import z from "zod";
 import { AppError } from "@server/errors";
-import { insertChatsSchema, updateChatsSchema } from "@server/schemas/chats";
+import { insertChatsSchema, updateChatsSchema } from "@server/schemas/chat";
 
 const chat = new Hono();
 

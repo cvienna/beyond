@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Chat } from "@server/schemas/chats";
+import { Chat } from "@server/schemas/chat";
 import { Message } from "@server/schemas/message";
 import { ChatCompletionEvent } from "@server/types";
 

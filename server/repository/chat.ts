@@ -1,5 +1,5 @@
 import { db } from "@server/lib/db";
-import { chats, NewChat } from "@server/schemas/chats";
+import { chats, NewChat } from "@server/schemas/chat";
 import { and, eq, isNull, isNotNull } from "drizzle-orm";
 
 export async function getChats() {
