@@ -9,7 +9,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import z from "zod";
-import { chats } from "./chat";
+import { chat } from "./chat";
 
 export const messageSchema = pgSchema("message");
 
@@ -19,7 +19,7 @@ export const message = messageSchema.table("message", {
   id: uuid("id").primaryKey().defaultRandom(),
   chatId: uuid("chatId")
     .notNull()
-    .references(() => chats.id, { onDelete: "cascade" }),
+    .references(() => chat.id, { onDelete: "cascade" }),
   content: text("content").notNull(),
   reasoningContent: text("reasoning_content"),
   role: roleEnum().notNull(),

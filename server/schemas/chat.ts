@@ -2,9 +2,9 @@ import { pgSchema, uuid, text, timestamp, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import z from "zod";
 
-export const chatsSchema = pgSchema("chats");
+export const chatSchema = pgSchema("chat");
 
-export const chats = chatsSchema.table("chats", {
+export const chat = chatSchema.table("chat", {
   id: uuid("id").primaryKey().defaultRandom(),
   title: text("title"),
   icon: text("icon"),
@@ -14,16 +14,16 @@ export const chats = chatsSchema.table("chats", {
   deletedAt: timestamp("deleted_at"),
 });
 
-export const insertChatsSchema = createInsertSchema(chats, {
+export const insertChatSchema = createInsertSchema(chat, {
   title: z.string().min(1).max(100),
   icon: z.emoji(),
 }).pick({ title: true, icon: true });
 
-export const updateChatsSchema = insertChatsSchema.partial();
+export const updateChatSchema = insertChatSchema.partial();
 
-export const selectChatsSchema = createSelectSchema(chats);
+export const selectChatsSchema = createSelectSchema(chat);
 
-export type Chat = typeof chats.$inferSelect;
-export type NewChat = typeof chats.$inferInsert;
-export type InsertChatInput = z.infer<typeof insertChatsSchema>;
-export type UpdateChatInput = z.infer<typeof updateChatsSchema>;
+export type Chat = typeof chat.$inferSelect;
+export type NewChat = typeof chat.$inferInsert;
+export type InsertChatInput = z.infer<typeof insertChatSchema>;
+export type UpdateChatInput = z.infer<typeof updateChatSchema>;

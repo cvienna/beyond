@@ -1,32 +1,32 @@
 import { db } from "@server/lib/db";
-import { chats, NewChat } from "@server/schemas/chat";
+import { chat, NewChat } from "@server/schemas/chat";
 import { and, eq, isNull, isNotNull } from "drizzle-orm";
 
 export async function getChats() {
-  return await db.select().from(chats).where(isNull(chats.deletedAt));
+  return await db.select().from(chat).where(isNull(chat.deletedAt));
 }
 
 export async function getChatById(id: string) {
   const result = await db
     .select()
-    .from(chats)
-    .where(and(eq(chats.id, id), isNull(chats.deletedAt)))
+    .from(chat)
+    .where(and(eq(chat.id, id), isNull(chat.deletedAt)))
     .limit(1);
 
   return result[0] ?? null;
 }
 
 export async function createChat(data: NewChat) {
-  const result = await db.insert(chats).values(data).returning();
+  const result = await db.insert(chat).values(data).returning();
 
   return result[0] ?? null;
 }
 
 export async function updateChat(id: string, data: Partial<NewChat>) {
   const result = await db
-    .update(chats)
+    .update(chat)
     .set({ ...data, updatedAt: new Date() })
-    .where(and(eq(chats.id, id), isNull(chats.deletedAt)))
+    .where(and(eq(chat.id, id), isNull(chat.deletedAt)))
     .returning();
 
   return result[0] ?? null;
@@ -34,9 +34,9 @@ export async function updateChat(id: string, data: Partial<NewChat>) {
 
 export async function softDeleteChat(id: string) {
   const result = await db
-    .update(chats)
+    .update(chat)
     .set({ deletedAt: new Date() })
-    .where(and(eq(chats.id, id), isNull(chats.deletedAt)))
+    .where(and(eq(chat.id, id), isNull(chat.deletedAt)))
     .returning();
 
   return result[0] ?? null;
@@ -44,9 +44,9 @@ export async function softDeleteChat(id: string) {
 
 export async function recoverChat(id: string) {
   const result = await db
-    .update(chats)
+    .update(chat)
     .set({ deletedAt: null })
-    .where(and(eq(chats.id, id), isNotNull(chats.deletedAt)))
+    .where(and(eq(chat.id, id), isNotNull(chat.deletedAt)))
     .returning();
 
   return result[0] ?? null;

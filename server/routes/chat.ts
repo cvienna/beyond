@@ -10,7 +10,7 @@ import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import z from "zod";
 import { AppError } from "@server/errors";
-import { insertChatsSchema, updateChatsSchema } from "@server/schemas/chat";
+import { insertChatSchema, updateChatSchema } from "@server/schemas/chat";
 
 const chat = new Hono();
 
@@ -26,7 +26,7 @@ chat.get("/:id", zValidator("param", z.object({ id: z.uuid() })), async (c) => {
   return ok(c, chat, 200);
 });
 
-chat.post("/", zValidator("json", insertChatsSchema), async (c) => {
+chat.post("/", zValidator("json", insertChatSchema), async (c) => {
   const body = c.req.valid("json");
   const chat = await createChat(body);
   if (!chat) throw new AppError(500, "Failed to create chat");
@@ -36,7 +36,7 @@ chat.post("/", zValidator("json", insertChatsSchema), async (c) => {
 chat.patch(
   "/:id",
   zValidator("param", z.object({ id: z.uuid() })),
-  zValidator("json", updateChatsSchema),
+  zValidator("json", updateChatSchema),
   async (c) => {
     const { id } = c.req.valid("param");
     const body = c.req.valid("json");
