@@ -17,10 +17,7 @@ export async function getChatById(id: string) {
 }
 
 export async function createChat(data: NewChat) {
-  const result = await db
-    .insert(chats)
-    .values({ ...data, createdAt: new Date(), updatedAt: new Date() })
-    .returning();
+  const result = await db.insert(chats).values(data).returning();
 
   return result[0] ?? null;
 }
