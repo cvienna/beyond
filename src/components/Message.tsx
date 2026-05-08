@@ -52,7 +52,7 @@ const Message = ({
       {/* Come back later to this - is key needed here or pass as a prop? ^^^ */}
       {data.role === "user" ? (
         <div className="flex flex-col items-end gap-4 group">
-          <div className="px-4 py-2 max-w-100 bg-neutral-100 rounded-3xl border border-neutral-200">
+          <div className="px-4 py-2 max-w-100 bg-light-surface rounded-3xl border border-light-border">
             {editMode ? (
               <input
                 type="text"
@@ -65,22 +65,22 @@ const Message = ({
             )}
           </div>
           <div className="flex justify-end items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-            <span className="text-sm text-neutral-600">
+            <span className="text-sm text-light-text-secondary">
               {new Date(data.createdAt).toLocaleTimeString()}
             </span>
             <button
               onClick={() => setEditMode((prev) => !prev)}
-              className="relative p-1.25 rounded-full hover:bg-neutral-100 transition-colors group/tooltip"
+              className="relative p-1.5 rounded-full hover:bg-light-bg-hover transition-colors group/text-hover group/tooltip"
             >
-              <Pencil className="size-4.5 text-neutral-600" />
-              <Tooltip label="Edit" position="bottom" />
+              <Pencil className="size-4.25 text-light-text-secondary group-hover/text-hover:text-light-text-primary" />
+              <Tooltip label="Edit" position="top" />
             </button>
             <button
               onClick={() => navigator.clipboard.writeText(data.content)}
-              className="relative p-1.25 rounded-full hover:bg-neutral-100 transition-colors group/tooltip"
+              className="relative p-1.5 rounded-full hover:bg-light-bg-hover transition-colors group/text-hover group/tooltip"
             >
-              <Copy className="size-4.5 text-neutral-600" />
-              <Tooltip label="Copy" position="bottom" />
+              <Copy className="size-4.25 text-light-text-secondary group-hover/text-hover:text-light-text-primary" />
+              <Tooltip label="Copy" position="top" />
             </button>
           </div>
         </div>
@@ -106,26 +106,26 @@ const Message = ({
           >
             <button
               onClick={() => navigator.clipboard.writeText(data.content)}
-              className="relative p-1.25 rounded-full  hover:bg-neutral-100 transition-colors group/tooltip"
+              className="relative p-1.5 rounded-full  hover:bg-light-bg-hover transition-colors group/text-hover group/tooltip"
             >
-              <Copy className="size-4.5 text-neutral-600" />
-              <Tooltip label="Copy" position="bottom" />
+              <Copy className="size-4.25 text-light-text-secondary group-hover/text-hover:text-light-text-primary" />
+              <Tooltip label="Copy" position="top" />
             </button>
             <button
               onClick={() => setFeedbackModal("positive")}
-              className="relative p-1.25 rounded-full hover:bg-neutral-100 transition-colors group/tooltip"
+              className="relative p-1.5 rounded-full hover:bg-light-bg-hover transition-colors group/text-hover group/tooltip"
             >
-              <ThumbsUp className="size-4.5 text-neutral-600" />
-              <Tooltip label="Good response" position="bottom" />
+              <ThumbsUp className="size-4.25 text-light-text-secondary group-hover/text-hover:text-light-text-primary" />
+              <Tooltip label="Good response" position="top" />
             </button>
             <button
               onClick={() => setFeedbackModal("negative")}
-              className="relative p-1.25 rounded-full hover:bg-neutral-100 transition-colors group/tooltip"
+              className="relative p-1.5 rounded-full hover:bg-light-bg-hover transition-colors group/text-hover group/tooltip"
             >
-              <ThumbsDown className="size-4.5 text-neutral-600" />
-              <Tooltip label="Bad response" position="bottom" />
+              <ThumbsDown className="size-4.25 text-light-text-secondary group-hover/text-hover:text-light-text-primary" />
+              <Tooltip label="Bad response" position="top" />
             </button>
-            <span className="pl-1 text-sm text-neutral-600">
+            <span className="pl-1 text-sm text-light-text-secondary">
               {data.duration}s ·{" "}
               {(data.completionTokens! / data.duration!).toFixed(2)} tok/s ·{" "}
               {data.completionTokens} tokens

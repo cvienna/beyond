@@ -61,7 +61,7 @@ const Sidebar = () => {
 
   return (
     <div
-      className="flex flex-col justify-between h-screen w-[256px] bg-[#FAFAFA] border-r border-[#E3E3E3]"
+      className="flex flex-col justify-between h-screen w-[256px] bg-light-surface border-r border-light-border"
       id="draggable"
     >
       <div>
@@ -69,18 +69,18 @@ const Sidebar = () => {
         <div className="flex flex-col gap-1 px-2">
           <button
             onClick={() => navigate({ page: "home" })}
-            className={`flex gap-3 items-center p-2 w-full rounded-xl
-          ${route.page === "home" ? "bg-neutral-200/50" : "hover:bg-neutral-200/50"}
-          `}
+            className={`flex gap-3 items-center p-2 w-full rounded-[14px]
+              ${route.page === "home" ? "bg-light-surface-hover" : "hover:bg-light-surface-hover"}
+            `}
           >
             <Plus className="size-4.75" />
             <span className="text-sm">New Chat</span>
           </button>
-          <button className="flex gap-3 items-center p-2 w-full rounded-xl hover:bg-neutral-200/50">
+          <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover">
             <Search className="size-4.75" />
             <span className="text-sm">Search</span>
           </button>
-          <button className="flex gap-3 items-center p-2 w-full rounded-xl hover:bg-neutral-200/50">
+          <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover">
             <MessageCircle className="size-4.75" />
             <span className="text-sm">Chats</span>
           </button>
@@ -92,8 +92,8 @@ const Sidebar = () => {
               <button
                 key={c.id}
                 onClick={() => navigate({ page: "chat", chatId: c.id })}
-                className={`relative flex gap-3 items-center p-2 h-9 w-full rounded-xl group
-              ${route.page === "chat" && route.chatId === c.id ? "bg-neutral-200/50" : "hover:bg-neutral-200/50"}
+                className={`relative flex gap-3 items-center p-2 h-9 w-full rounded-[14px] group
+              ${route.page === "chat" && route.chatId === c.id ? "bg-light-surface-hover" : "hover:bg-light-surface-hover"}
             `}
               >
                 <span className="flex text-lg">{c.icon}</span>
@@ -108,31 +108,31 @@ const Sidebar = () => {
                   <Ellipsis className="size-4.5" />
                 </button>
                 {chatMenu === c.id && (
-                  <div className="absolute translate-y-full -bottom-2 right-0 z-100 flex flex-col gap-1 p-2 w-48 rounded-3xl bg-neutral-100 border border-neutral-200">
+                  <div className="absolute translate-y-full -bottom-2 right-0 z-100 flex flex-col gap-1 p-2 w-48 rounded-3xl bg-light-surface border border-light-border">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         setChatRename(c.id);
                       }}
-                      className="flex items-center gap-2 px-2.5 py-1.5 rounded-2xl hover:bg-neutral-200/50"
+                      className="flex items-center gap-2 px-2.5 py-1.5 rounded-2xl hover:bg-light-surface-hover"
                     >
                       <Pencil className="size-4.5" />
                       <span className="text-[15px]">Rename</span>
                     </button>
                     <button
                       onClick={(e) => e.stopPropagation()}
-                      className="flex items-center gap-2 px-2.5 py-1.5 rounded-2xl hover:bg-neutral-200/50"
+                      className="flex items-center gap-2 px-2.5 py-1.5 rounded-2xl hover:bg-light-surface-hover"
                     >
                       <Smile className="size-4.5" />
                       <span className="text-[15px]">Change Icon</span>
                     </button>
-                    <div className="h-px w-full bg-neutral-200" />
+                    <div className="h-px w-full bg-light-border" />
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         handleDeleteChat(c.id);
                       }}
-                      className="flex items-center gap-2 px-2.5 py-1.5 text-red-400 rounded-2xl hover:bg-neutral-200/50"
+                      className="flex items-center gap-2 px-2.5 py-1.5 text-red-400 rounded-2xl hover:bg-light-surface-hover"
                     >
                       <Package className="size-4.5" />
                       <span className="text-[15px]">Archive</span>
@@ -144,7 +144,7 @@ const Sidebar = () => {
         </div>
       </div>
       <div className="px-2 py-3">
-        <button className="flex gap-3 items-center p-2 w-full rounded-xl hover:bg-neutral-200/50">
+        <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover">
           <Settings className="size-4.75" />
           <span className="text-sm">Settings</span>
         </button>

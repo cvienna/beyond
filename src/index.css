@@ -8,6 +8,16 @@ body {
     font-weight: 350;
 }
 
+@theme {
+    --color-light-bg: #fff;
+    --color-light-bg-hover: #f2f2f2;
+    --color-light-surface: #fbfbfb;
+    --color-light-surface-hover: #f1f1f1;
+    --color-light-border: #e8e8e8;
+    --color-light-text-primary: #171717;
+    --color-light-text-secondary: #737373;
+}
+
 @font-face {
     font-family: "Inter";
     src: url("./assets/font/Inter-VariableFont_opsz,wght.ttf")
