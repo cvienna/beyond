@@ -1,7 +1,7 @@
 import { ChevronRight, Copy, Pencil, ThumbsDown, ThumbsUp } from "lucide-react";
 import type { Message } from "@server/schemas/message";
 import { useState } from "react";
-import Feedback from "./Feedback";
+import Feedback from "./modal/Feedback";
 import { client } from "@/lib/client";
 import { useChatStore } from "@/store/chat";
 import Tooltip from "./Tooltip";
