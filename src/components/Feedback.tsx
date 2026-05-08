@@ -32,7 +32,7 @@ const Feedback = ({
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="px-4.5 py-3 max-h-64 bg-neutral-200/50 placeholder:text-neutral-500 rounded-3xl outline-none border border-neutral-300 resize-none field-sizing-content"
+            className="px-4.5 py-3 min-h-19 max-h-49 bg-neutral-200/50 placeholder:text-neutral-500 rounded-3xl outline-none border border-neutral-300 resize-none field-sizing-content hide-scrollbar"
             placeholder={`What was ${type === "positive" ? "satisfying" : "unsatisfying"} about this response?`}
           />
         </div>
