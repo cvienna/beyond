@@ -7,7 +7,7 @@ const Tooltip = ({
 }) => {
   return (
     <div
-      className={`absolute px-2.5 py-1.25 bg-neutral-900 rounded-xl cursor-default hidden group-hover:flex
+      className={`absolute px-2.5 py-1.25 bg-neutral-900 rounded-xl cursor-default hidden group-hover/tooltip:flex
         ${position === "top" && "-top-2 -translate-y-full left-1/2 -translate-x-1/2"}
         ${position === "bottom" && "-bottom-2 translate-y-full left-1/2 -translate-x-1/2"}
         ${position === "left" && "top-1/2 -translate-y-1/2 -left-2 -translate-x-full"}
