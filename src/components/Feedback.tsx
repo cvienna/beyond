@@ -7,7 +7,10 @@ const Feedback = ({
   onCancel,
 }: {
   type: "positive" | "negative";
-  onSubmit: (description: string) => void;
+  onSubmit: (
+    type: "positive" | "negative",
+    description: string | undefined,
+  ) => void;
   onCancel: () => void;
 }) => {
   const [description, setDescription] = useState("");
@@ -38,7 +41,9 @@ const Feedback = ({
         </div>
         <div className="flex justify-end gap-2 w-full">
           <button
-            onClick={() => onSubmit(description)}
+            onClick={() =>
+              onSubmit(type, description ? description : undefined)
+            }
             className="px-5 py-1.5 bg-neutral-800 rounded-2xl cursor-pointer"
           >
             <span className="text-[15px] text-white">Submit</span>

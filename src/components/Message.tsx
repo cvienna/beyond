@@ -2,6 +2,8 @@ import { ChevronRight, Copy, Pencil, ThumbsDown, ThumbsUp } from "lucide-react";
 import type { Message } from "@server/schemas/message";
 import { useState } from "react";
 import Feedback from "./Feedback";
+import { client } from "@/lib/client";
+import { useChatStore } from "@/store/chat";
 
 const Message = ({
   data,
@@ -10,14 +12,32 @@ const Message = ({
   data: Message;
   isLast?: boolean;
 }) => {
+  const { updateMessage } = useChatStore();
   const [editMode, setEditMode] = useState(false);
   const [editContent, setEditContent] = useState(data.content);
   const [feedbackModal, setFeedbackModal] = useState<
     "positive" | "negative" | null
   >(null);
 
-  const handleSubmit = (description: string) => {
-    console.log("Submitted", description);
+  const handleSubmit = async (
+    type: "positive" | "negative",
+    description: string | undefined,
+  ) => {
+    updateMessage(data.chatId, data.id, {
+      feedback: {
+        review: type === "positive" ? "good" : "bad",
+        note: description,
+      },
+    });
+    await client.api.message[":id"].$patch({
+      param: { id: data.id },
+      json: {
+        feedback: {
+          review: type === "positive" ? "good" : "bad",
+          note: description,
+        },
+      },
+    });
   };
 
   return (
@@ -107,7 +127,7 @@ const Message = ({
       {feedbackModal && (
         <Feedback
           type={feedbackModal}
-          onSubmit={(description) => handleSubmit(description)}
+          onSubmit={(type, description) => handleSubmit(type, description)}
           onCancel={() => setFeedbackModal(null)}
         />
       )}
