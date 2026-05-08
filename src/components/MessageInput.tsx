@@ -35,12 +35,7 @@ const MessageInput = ({
   }, []);
 
   const handleSubmit = () => {
-    submit(
-      data[target].model,
-      data[target].prompt,
-      new Date(),
-      currentChat?.id,
-    );
+    submit(data[target].model, data[target].prompt, currentChat?.id);
   };
 
   const currentModel = getModel(data[target].model);
@@ -68,25 +63,24 @@ const MessageInput = ({
       </div>
       <div className="flex justify-between px-3.75 pb-3.75 w-full">
         <div className="flex items-center gap-2">
-          <button className="flex gap-2 items-center p-1.5 rounded-full cursor-pointer hover:bg-neutral-200/60 transition-colors">
+          <button className="relative flex gap-2 items-center p-1.5 rounded-full cursor-pointer hover:bg-neutral-200/60 transition-colors group/tooltip">
             <Plus className="size-4.5 text-[#333]" />
+            <Tooltip label="More" position="top" />
           </button>
-          <div className="relative">
-            <button
-              className={`select-none flex gap-2 items-center px-1.5 h-7.5 rounded-full cursor-pointer transition-colors
+          <button
+            className={`relative flex gap-2 items-center px-1.5 h-7.5 rounded-full select-none cursor-pointer transition-colors group/tooltip
               ${data[target].search ? "bg-blue-200/30 text-blue-600/65" : "hover:bg-neutral-200/60 text-black"}
             `}
-              onClick={() => toggleSearch(target)}
-            >
-              <Search className="size-4.5" />
-              {/*{data[target].search && (
+            onClick={() => toggleSearch(target)}
+          >
+            <Search className="size-4.5" />
+            {/*{data[target].search && (
               <span className="pr-2 text-sm">Search</span>
             )}*/}
-            </button>
-            <Tooltip label="Search" position="right" />
-          </div>
+            <Tooltip label="Search" position="top" />
+          </button>
           <button
-            className={`select-none flex gap-2 items-center px-1.5 h-7.5 rounded-full cursor-pointer transition-colors
+            className={`relative flex gap-2 items-center px-1.5 h-7.5 rounded-full select-none cursor-pointer transition-colors group/tooltip
               ${data[target].reasoning ? "bg-blue-200/30 text-blue-600/65" : "hover:bg-neutral-200/60 text-black"}
             `}
             onClick={() => toggleReasoning(target)}
@@ -95,6 +89,7 @@ const MessageInput = ({
             {/*{data[target].reasoning && (
               <span className="pr-2 text-sm">Reasoning</span>
             )}*/}
+            <Tooltip label="Reasoning" position="top" />
           </button>
         </div>
         <div className="relative flex items-center gap-2">

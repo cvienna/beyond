@@ -1,6 +1,7 @@
 import { SidebarIcon, SquarePen } from "lucide-react";
 import { constants } from "@shared/constants";
 import { useUiStore } from "@/store/ui";
+import Tooltip from "./Tooltip";
 
 const Navbar = ({ width }: { width: number }) => {
   const { route, navigate, sidebar, toggleSidebar } = useUiStore();
@@ -32,17 +33,19 @@ const Navbar = ({ width }: { width: number }) => {
       >
         <button
           onClick={toggleSidebar}
-          className="p-1.5 rounded-full hover:bg-neutral-200/60 transition-colors"
+          className="relative p-1.5 rounded-full hover:bg-neutral-200/60 transition-colors group/tooltip"
         >
           <SidebarIcon className="size-4.5" />
+          <Tooltip label="Sidebar" position="bottom" />
         </button>
         {!sidebar && route.page !== "home" && (
           <>
-            <button className="p-1.5 rounded-full hover:bg-neutral-200/60 transition-colors">
+            <button className="relative p-1.5 rounded-full hover:bg-neutral-200/60 transition-colors group/tooltip">
               <SquarePen
                 onClick={() => navigate({ page: "home" })}
                 className="size-4.5"
               />
+              <Tooltip label="New Chat" position="bottom" />
             </button>
             <span
               className={`pl-1 text-sm

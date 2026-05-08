@@ -4,6 +4,7 @@ import { useState } from "react";
 import Feedback from "./Feedback";
 import { client } from "@/lib/client";
 import { useChatStore } from "@/store/chat";
+import Tooltip from "./Tooltip";
 
 const Message = ({
   data,
@@ -62,21 +63,23 @@ const Message = ({
               <span className="font-light">{data.content}</span>
             )}
           </div>
-          <div className="flex justify-end items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity ">
+          <div className="flex justify-end items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
             <span className="text-sm text-neutral-600">
               {new Date(data.createdAt).toLocaleTimeString()}
             </span>
             <button
               onClick={() => setEditMode((prev) => !prev)}
-              className="p-1.25 rounded-full hover:bg-neutral-100 transition-colors"
+              className="relative p-1.25 rounded-full hover:bg-neutral-100 transition-colors group/tooltip"
             >
               <Pencil className="size-4.5 text-neutral-600" />
+              <Tooltip label="Edit" position="bottom" />
             </button>
             <button
               onClick={() => navigator.clipboard.writeText(data.content)}
-              className="p-1.25 rounded-full hover:bg-neutral-100 transition-colors"
+              className="relative p-1.25 rounded-full hover:bg-neutral-100 transition-colors group/tooltip"
             >
               <Copy className="size-4.5 text-neutral-600" />
+              <Tooltip label="Copy" position="bottom" />
             </button>
           </div>
         </div>
@@ -100,21 +103,24 @@ const Message = ({
           >
             <button
               onClick={() => navigator.clipboard.writeText(data.content)}
-              className="p-1.25 rounded-full  hover:bg-neutral-100 transition-colors"
+              className="relative p-1.25 rounded-full  hover:bg-neutral-100 transition-colors group/tooltip"
             >
               <Copy className="size-4.5 text-neutral-600" />
+              <Tooltip label="Copy" position="bottom" />
             </button>
             <button
               onClick={() => setFeedbackModal("positive")}
-              className="p-1.25 rounded-full hover:bg-neutral-100 transition-colors"
+              className="relative p-1.25 rounded-full hover:bg-neutral-100 transition-colors group/tooltip"
             >
               <ThumbsUp className="size-4.5 text-neutral-600" />
+              <Tooltip label="Good response" position="bottom" />
             </button>
             <button
               onClick={() => setFeedbackModal("negative")}
-              className="p-1.25 rounded-full hover:bg-neutral-100 transition-colors"
+              className="relative p-1.25 rounded-full hover:bg-neutral-100 transition-colors group/tooltip"
             >
               <ThumbsDown className="size-4.5 text-neutral-600" />
+              <Tooltip label="Bad response" position="bottom" />
             </button>
             <span className="pl-1 text-sm text-neutral-600">
               {data.duration}s ·{" "}
