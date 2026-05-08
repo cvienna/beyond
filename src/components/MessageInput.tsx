@@ -36,6 +36,7 @@ const MessageInput = ({
 
   const handleSubmit = () => {
     submit(data[target].model, data[target].prompt, currentChat?.id);
+    setPrompt(target, "");
   };
 
   const currentModel = getModel(data[target].model);
