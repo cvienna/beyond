@@ -1,6 +1,7 @@
 import { ChevronRight, Copy, Pencil, ThumbsDown, ThumbsUp } from "lucide-react";
 import type { Message } from "@server/schemas/message";
 import { useState } from "react";
+import Feedback from "./Feedback";
 
 const Message = ({
   data,
@@ -11,6 +12,13 @@ const Message = ({
 }) => {
   const [editMode, setEditMode] = useState(false);
   const [editContent, setEditContent] = useState(data.content);
+  const [feedbackModal, setFeedbackModal] = useState<
+    "positive" | "negative" | null
+  >(null);
+
+  const handleSubmit = (description: string) => {
+    console.log("Submitted", description);
+  };
 
   return (
     <div
@@ -76,10 +84,16 @@ const Message = ({
             >
               <Copy className="size-4.5 text-neutral-600" />
             </button>
-            <button className="p-1.25 rounded-full hover:bg-neutral-100 transition-colors">
+            <button
+              onClick={() => setFeedbackModal("positive")}
+              className="p-1.25 rounded-full hover:bg-neutral-100 transition-colors"
+            >
               <ThumbsUp className="size-4.5 text-neutral-600" />
             </button>
-            <button className="p-1.25 rounded-full hover:bg-neutral-100 transition-colors">
+            <button
+              onClick={() => setFeedbackModal("negative")}
+              className="p-1.25 rounded-full hover:bg-neutral-100 transition-colors"
+            >
               <ThumbsDown className="size-4.5 text-neutral-600" />
             </button>
             <span className="pl-1 text-sm text-neutral-600">
@@ -89,6 +103,13 @@ const Message = ({
             </span>
           </div>
         </div>
+      )}
+      {feedbackModal && (
+        <Feedback
+          type={feedbackModal}
+          onSubmit={(description) => handleSubmit(description)}
+          onCancel={() => setFeedbackModal(null)}
+        />
       )}
     </div>
   );
