@@ -16,11 +16,11 @@ const RenameChat = ({
       <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-4 px-6 py-5 w-xl bg-neutral-100 rounded-[28px] border border-neutral-300/75">
         <h1 className="text-[22px]">Rename chat</h1>
         <div className="flex flex-col gap-2">
-          <span>Provide a new chat title</span>
-          <textarea
+          <input
+            type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="px-4.5 py-3 min-h-19 max-h-49 bg-neutral-200/50 placeholder:text-neutral-500 rounded-3xl outline-none border border-neutral-300 resize-none field-sizing-content hide-scrollbar"
+            className="px-3.5 py-2 bg-neutral-200/50 placeholder:text-neutral-500 rounded-2xl outline-none border border-neutral-300 resize-none field-sizing-content hide-scrollbar"
             placeholder={"New chat title"}
           />
         </div>

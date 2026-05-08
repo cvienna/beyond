@@ -154,7 +154,10 @@ const Sidebar = () => {
         <RenameChat
           prevTitle={chats?.find((c) => c.id === chatRename)?.title ?? ""}
           onCancel={() => setChatRename(null)}
-          onSubmit={(title) => handleUpdateChat(chatRename, { title })}
+          onSubmit={(title) => {
+            handleUpdateChat(chatRename, { title });
+            setChatRename(null);
+          }}
         />
       )}
     </div>
