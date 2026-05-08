@@ -11,7 +11,6 @@ export async function streamCompletion(
     chatId?: string;
     model: ModelId;
     prompt: string;
-    createdAt: Date;
   },
   onEvent: (event: ChatEvent | ChatMessageEvent | ChatCompletionEvent) => void,
 ) {

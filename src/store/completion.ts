@@ -7,23 +7,17 @@ import { useStreamingStore } from "./streaming";
 import { useMessageInputStore } from "./messageInput";
 
 interface CompletionState {
-  submit: (
-    model: ModelId,
-    prompt: string,
-    createdAt: Date,
-    chatId?: string,
-  ) => void;
+  submit: (model: ModelId, prompt: string, chatId?: string) => void;
 }
 
 export const useCompletionStore = create<CompletionState>(() => {
   return {
-    submit: async (model, prompt, createdAt, chatId) => {
+    submit: async (model, prompt, chatId) => {
       await streamCompletion(
         {
-          chatId,
           model,
           prompt,
-          createdAt,
+          chatId,
         },
         (event) => {
           if (event.event === "chat.create") {
