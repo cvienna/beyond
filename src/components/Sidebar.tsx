@@ -15,6 +15,8 @@ import { useChatStore } from "@/store/chat";
 import { useMessageInputStore } from "@/store/messageInput";
 import { client } from "@/lib/client";
 import { chatResponseSchema } from "@shared/schemas/chat";
+import RenameChat from "./modal/RenameChat";
+import { UpdateChatInput } from "@server/schemas/chat";
 
 const Sidebar = () => {
   const { route, navigate } = useUiStore();
@@ -22,6 +24,7 @@ const Sidebar = () => {
   const { setRecords } = useMessageInputStore();
 
   const [chatMenu, setChatMenu] = useState<string | null>(null);
+  const [chatRename, setChatRename] = useState<string | null>(null);
 
   // Fetch chats from API
   useEffect(() => {
@@ -44,7 +47,7 @@ const Sidebar = () => {
     return () => document.removeEventListener("click", handler);
   }, []);
 
-  const handleUpdateChat = async (id: string, data: Partial<object>) => {
+  const handleUpdateChat = async (id: string, data: UpdateChatInput) => {
     updateChat(id, data);
 
     await client.api.chat[":id"].$patch({ param: { id }, json: data });
@@ -107,7 +110,10 @@ const Sidebar = () => {
                 {chatMenu === c.id && (
                   <div className="absolute translate-y-full -bottom-2 right-0 z-100 flex flex-col gap-1 p-2 w-48 rounded-3xl bg-neutral-100 border border-neutral-200">
                     <button
-                      onClick={(e) => e.stopPropagation()}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setChatRename(c.id);
+                      }}
                       className="flex items-center gap-2 px-2.5 py-1.5 rounded-2xl hover:bg-neutral-200/50"
                     >
                       <Pencil className="size-4.5" />
@@ -143,6 +149,17 @@ const Sidebar = () => {
           <span className="text-sm">Settings</span>
         </button>
       </div>
+      {/* Might be safer to pass chatId to component, but should in theory never fail */}
+      {chatRename && (
+        <RenameChat
+          prevTitle={chats?.find((c) => c.id === chatRename)?.title ?? ""}
+          onCancel={() => setChatRename(null)}
+          onSubmit={(title) => {
+            handleUpdateChat(chatRename, { title });
+            setChatRename(null);
+          }}
+        />
+      )}
     </div>
   );
 };
