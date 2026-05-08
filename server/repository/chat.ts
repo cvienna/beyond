@@ -1,9 +1,13 @@
 import { db } from "@server/lib/db";
 import { chat, NewChat } from "@server/schemas/chat";
-import { and, eq, isNull, isNotNull } from "drizzle-orm";
+import { and, eq, isNull, isNotNull, desc } from "drizzle-orm";
 
 export async function getChats() {
-  return await db.select().from(chat).where(isNull(chat.deletedAt));
+  return await db
+    .select()
+    .from(chat)
+    .where(isNull(chat.deletedAt))
+    .orderBy(desc(chat.updatedAt));
 }
 
 export async function getChatById(id: string) {
