@@ -50,7 +50,7 @@ const MessageInput = ({
 
   return (
     <div
-      className={`flex flex-col w-full bg-neutral-100/50 rounded-4xl border border-neutral-200 cursor-text
+      className={`flex flex-col w-full bg-light-surface rounded-4xl border border-light-border cursor-text
         ${inline && "-mt-6.5 mb-4"}
         ${size === "lg" ? "lg:max-w-3xl md:max-w-2xl max-w-160" : size === "md" ? "md:max-w-2xl max-w-160" : "max-w-160"}
       `}
@@ -71,29 +71,37 @@ const MessageInput = ({
       </div>
       <div className="flex justify-between px-3.75 pb-3.75 w-full">
         <div className="flex items-center gap-2">
-          <button className="relative flex gap-2 items-center p-1.5 rounded-full cursor-pointer hover:bg-neutral-200/60 transition-colors group/tooltip">
-            <Plus className="size-4.5 text-[#333]" />
+          <button className="relative flex gap-2 items-center p-1.5 rounded-full cursor-pointer hover:bg-light-surface-hover transition-colors group/text-hover group/tooltip">
+            <Plus className="size-4.5 text-light-text-secondary group-hover/text-hover:text-light-text-primary" />
             <Tooltip label="More" position="top" />
           </button>
           <button
-            className={`relative flex gap-2 items-center px-1.5 h-7.5 rounded-full select-none cursor-pointer transition-colors group/tooltip
-              ${data[target].search ? "bg-blue-200/30 text-blue-600/65" : "hover:bg-neutral-200/60 text-black"}
+            className={`relative flex gap-2 items-center px-1.5 h-7.5 rounded-full select-none cursor-pointer transition-colors group/text-hover group/tooltip
+              ${data[target].search ? "bg-blue-200/30 text-blue-600/65" : "hover:bg-light-surface-hover"}
             `}
             onClick={() => toggleSearch(target)}
           >
-            <Search className="size-4.5" />
+            <Search
+              className={`size-4.5
+                ${data[target].search ? "text-blue-600/65" : "text-light-text-secondary group-hover/text-hover:text-light-text-primary"}
+              `}
+            />
             {/*{data[target].search && (
               <span className="pr-2 text-sm">Search</span>
             )}*/}
             <Tooltip label="Search" position="top" />
           </button>
           <button
-            className={`relative flex gap-2 items-center px-1.5 h-7.5 rounded-full select-none cursor-pointer transition-colors group/tooltip
-              ${data[target].reasoning ? "bg-blue-200/30 text-blue-600/65" : "hover:bg-neutral-200/60 text-black"}
+            className={`relative flex gap-2 items-center px-1.5 h-7.5 rounded-full select-none cursor-pointer transition-colors group/text-hover group/tooltip
+              ${data[target].reasoning ? "bg-blue-200/30 text-blue-600/65" : "hover:bg-light-surface-hover"}
             `}
             onClick={() => toggleReasoning(target)}
           >
-            <Clock className="size-4.5" />
+            <Clock
+              className={`size-4.5
+                ${data[target].reasoning ? "text-blue-600/65" : "text-light-text-secondary group-hover/text-hover:text-light-text-primary"}
+              `}
+            />
             {/*{data[target].reasoning && (
               <span className="pr-2 text-sm">Reasoning</span>
             )}*/}
@@ -102,14 +110,14 @@ const MessageInput = ({
         </div>
         <div className="relative flex items-center gap-2">
           {modelDropdown && (
-            <div className="select-none absolute -top-1 -translate-y-full flex flex-col gap-2 p-2 max-h-60 w-56 overflow-auto cursor-default bg-neutral-100 rounded-3xl border border-neutral-200 hide-scrollbar">
+            <div className="select-none absolute -top-1 -translate-y-full flex flex-col gap-2 p-2 max-h-60 w-56 overflow-auto cursor-default bg-light-surface rounded-3xl border border-light-border hide-scrollbar">
               {Object.entries(MODELS).map(([id, model], i, arr) => (
                 <div key={i} className="flex flex-col gap-2">
                   <button
                     key={id}
                     onClick={() => setModel(target, id as ModelId)}
                     className={`flex items-center gap-2.5 px-2 py-2 rounded-2xl
-                        ${id === data[target].model ? "bg-neutral-200/75" : "hover:bg-neutral-200/50"}
+                        ${id === data[target].model ? "bg-light-surface-hover" : "hover:bg-light-surface-hover"}
                       `}
                   >
                     <img src={getModel(id).icon} className="size-4.5" />
@@ -130,7 +138,7 @@ const MessageInput = ({
               e.stopPropagation();
               setModelDropdown((prev) => !prev);
             }}
-            className="select-none flex gap-2 items-center px-1.5 h-7.5 rounded-full cursor-pointer hover:bg-neutral-200/60 transition-colors"
+            className="select-none flex gap-2 items-center px-1.5 h-7.5 rounded-full cursor-pointer hover:bg-light-surface-hover transition-colors"
           >
             <img src={currentModel.icon} className="size-5" />
             <span className="pr-1.5 text-sm text-neutral-500">
