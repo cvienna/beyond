@@ -41,18 +41,18 @@ const Feedback = ({
         </div>
         <div className="flex justify-end gap-2 w-full">
           <button
+            onClick={onCancel}
+            className="px-5 py-1.5 bg-neutral-200 rounded-2xl border border-neutral-300 cursor-pointer"
+          >
+            <span className="text-[15px]">Cancel</span>
+          </button>
+          <button
             onClick={() =>
               onSubmit(type, description ? description : undefined)
             }
             className="px-5 py-1.5 bg-neutral-800 rounded-2xl cursor-pointer"
           >
             <span className="text-[15px] text-white">Submit</span>
-          </button>
-          <button
-            onClick={onCancel}
-            className="px-5 py-1.5 bg-neutral-200 rounded-2xl border border-neutral-300 cursor-pointer"
-          >
-            <span className="text-[15px]">Cancel</span>
           </button>
         </div>
       </div>
