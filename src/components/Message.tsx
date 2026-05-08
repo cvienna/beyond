@@ -5,6 +5,7 @@ import Feedback from "./Feedback";
 import { client } from "@/lib/client";
 import { useChatStore } from "@/store/chat";
 import Tooltip from "./Tooltip";
+import ReactMarkdown from "react-markdown";
 
 const Message = ({
   data,
@@ -94,7 +95,9 @@ const Message = ({
               {/*<span className="font-light">{data.reasoningContent}</span>*/}
             </div>
           )}
-          <span className="font-light">{data.content}</span>
+          <span className="font-light">
+            <ReactMarkdown>{data.content}</ReactMarkdown>
+          </span>
           <div
             className={`flex items-center justify-start gap-2 opacity-0 transition-opacity
               ${isLast && (data.completionTokens || data.ttft || data.duration) && "opacity-100"}
