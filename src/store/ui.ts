@@ -1,6 +1,9 @@
 import { create } from "zustand";
 
-type Route = { page: "home" } | { page: "chat"; chatId: string };
+type Route =
+  | { page: "home" }
+  | { page: "chat"; chatId: string }
+  | { page: "settings" };
 
 interface UiState {
   route: Route;
