@@ -6,6 +6,7 @@ import { useMessageInputStore } from "@/store/messageInput";
 import { useUiStore } from "@/store/ui";
 import { getModel, ModelId, MODELS } from "@shared/models";
 import { useCompletionStore } from "@/store/completion";
+import Tooltip from "./Tooltip";
 
 const MessageInput = ({
   size,
@@ -70,17 +71,20 @@ const MessageInput = ({
           <button className="flex gap-2 items-center p-1.5 rounded-full cursor-pointer hover:bg-neutral-200/60 transition-colors">
             <Plus className="size-4.5 text-[#333]" />
           </button>
-          <button
-            className={`select-none flex gap-2 items-center px-1.5 h-7.5 rounded-full cursor-pointer transition-colors
+          <div className="relative">
+            <button
+              className={`select-none flex gap-2 items-center px-1.5 h-7.5 rounded-full cursor-pointer transition-colors
               ${data[target].search ? "bg-blue-200/30 text-blue-600/65" : "hover:bg-neutral-200/60 text-black"}
             `}
-            onClick={() => toggleSearch(target)}
-          >
-            <Search className="size-4.5" />
-            {/*{data[target].search && (
+              onClick={() => toggleSearch(target)}
+            >
+              <Search className="size-4.5" />
+              {/*{data[target].search && (
               <span className="pr-2 text-sm">Search</span>
             )}*/}
-          </button>
+            </button>
+            <Tooltip label="Search" position="right" />
+          </div>
           <button
             className={`select-none flex gap-2 items-center px-1.5 h-7.5 rounded-full cursor-pointer transition-colors
               ${data[target].reasoning ? "bg-blue-200/30 text-blue-600/65" : "hover:bg-neutral-200/60 text-black"}
