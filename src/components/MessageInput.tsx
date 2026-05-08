@@ -149,7 +149,7 @@ const MessageInput = ({
             onClick={handleSubmit}
             disabled={isStreaming}
             className={`p-1.5 rounded-full cursor-pointer
-              ${isStreaming ? "bg-neutral-200/50 text-neutral-400" : "bg-neutral-900 text-white"}
+              ${isStreaming ? "bg-light-surface-hover text-light-text-secondary" : "bg-light-text-primary text-white"}
             `}
           >
             {isStreaming ? (
