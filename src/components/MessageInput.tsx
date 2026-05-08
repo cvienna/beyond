@@ -1,12 +1,13 @@
 import "../App.css";
 import { useState, useEffect } from "react";
-import { ArrowUp, Clock, Plus, Search } from "lucide-react";
+import { ArrowUp, Clock, LoaderCircle, Plus, Search } from "lucide-react";
 import { useChatStore } from "@/store/chat";
 import { useMessageInputStore } from "@/store/messageInput";
 import { useUiStore } from "@/store/ui";
 import { getModel, ModelId, MODELS } from "@shared/models";
 import { useCompletionStore } from "@/store/completion";
 import Tooltip from "./Tooltip";
+import { useStreamingStore } from "@/store/streaming";
 
 const MessageInput = ({
   size,
@@ -20,6 +21,7 @@ const MessageInput = ({
   const { data, setPrompt, setModel, toggleReasoning, toggleSearch } =
     useMessageInputStore();
   const { submit } = useCompletionStore();
+  const { activeStreams } = useStreamingStore();
 
   const currentChat = chats
     ? chats.find((c) => route.page === "chat" && c.id === route.chatId)
@@ -36,9 +38,15 @@ const MessageInput = ({
 
   const handleSubmit = () => {
     submit(data[target].model, data[target].prompt, currentChat?.id);
+    setPrompt(target, "");
   };
 
   const currentModel = getModel(data[target].model);
+
+  // TODO: This is slow, consider extending logic for O(1) lookup
+  const isStreaming = !!Object.keys(activeStreams).find(
+    (s) => activeStreams[s].chatId === currentChat?.id,
+  );
 
   return (
     <div
@@ -52,7 +60,7 @@ const MessageInput = ({
           value={data[target].prompt}
           onChange={(e) => setPrompt(target, e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
+            if (e.key === "Enter" && !e.shiftKey && !isStreaming) {
               e.preventDefault();
               handleSubmit();
             }
@@ -131,9 +139,16 @@ const MessageInput = ({
           </div>
           <button
             onClick={handleSubmit}
-            className="p-1.5 bg-black text-white rounded-full cursor-pointer"
+            disabled={isStreaming}
+            className={`p-1.5 rounded-full cursor-pointer
+              ${isStreaming ? "bg-neutral-200/50 text-neutral-400" : "bg-neutral-900 text-white"}
+            `}
           >
-            <ArrowUp className="size-4.5" />
+            {isStreaming ? (
+              <LoaderCircle className="size-4.5 animate-spin" />
+            ) : (
+              <ArrowUp className="size-4.5" />
+            )}
           </button>
         </div>
       </div>
