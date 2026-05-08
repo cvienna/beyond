@@ -40,11 +40,11 @@ const Navbar = ({ width }: { width: number }) => {
         </button>
         {!sidebar && route.page !== "home" && (
           <>
-            <button className="relative p-1.5 rounded-full hover:bg-neutral-200/60 transition-colors group/tooltip">
-              <SquarePen
-                onClick={() => navigate({ page: "home" })}
-                className="size-4.5"
-              />
+            <button
+              onClick={() => navigate({ page: "home" })}
+              className="relative p-1.5 rounded-full hover:bg-neutral-200/60 transition-colors group/tooltip"
+            >
+              <SquarePen className="size-4.5" />
               <Tooltip label="New Chat" position="bottom" />
             </button>
             <span
