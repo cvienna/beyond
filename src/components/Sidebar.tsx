@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 
 import {
   Ellipsis,
@@ -18,15 +18,18 @@ import { chatResponseSchema } from "@shared/schemas/chat";
 import RenameChat from "./modal/RenameChat";
 import { UpdateChatInput } from "@server/schemas/chat";
 
-const ChatMenuDropdown = ({
-  onRename,
-  onDelete,
-}: {
-  onRename: () => void;
-  onDelete: () => void;
-}) => {
+const ChatMenuDropdown = forwardRef<
+  HTMLDivElement,
+  {
+    onRename: () => void;
+    onDelete: () => void;
+  }
+>(({ onRename, onDelete }, ref) => {
   return (
-    <div className="absolute translate-y-full -bottom-2 right-0 z-100 flex flex-col gap-1 p-2 w-48 rounded-3xl bg-light-surface border border-light-border">
+    <div
+      ref={ref}
+      className="absolute translate-y-full -bottom-2 right-0 z-100 flex flex-col gap-1 p-2 w-48 rounded-3xl bg-light-surface border border-light-border"
+    >
       <button
         onClick={(e) => {
           e.stopPropagation();
@@ -57,7 +60,7 @@ const ChatMenuDropdown = ({
       </button>
     </div>
   );
-};
+});
 
 const Sidebar = () => {
   const { route, navigate, sidebar, toggleSidebar } = useUiStore();
@@ -84,10 +87,19 @@ const Sidebar = () => {
 
   // Click outside listener for collapse
   useEffect(() => {
-    const handler = () => setChatMenu(null);
+    const handler = (e: MouseEvent) => {
+      if (
+        chatMenuRef.current &&
+        !chatMenuRef.current.contains(e.target as Node)
+      ) {
+        setChatMenu(null);
+      }
+    };
+
     document.addEventListener("click", handler);
+
     return () => document.removeEventListener("click", handler);
-  }, []);
+  }, [chatMenu]);
 
   const handleUpdateChat = async (id: string, data: UpdateChatInput) => {
     updateChat(id, data);
@@ -105,7 +117,7 @@ const Sidebar = () => {
     <>
       <div
         className="fixed flex flex-col justify-between h-screen w-[256px] bg-light-surface border-r border-light-border lg:static z-100"
-        id="draggable"
+        // id="draggable" // NOTE: Broken because of chatMenuRef click outside logic
       >
         <div>
           <div className="h-14" />
@@ -145,7 +157,7 @@ const Sidebar = () => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        setChatMenu(c.id);
+                        setChatMenu((prev) => (prev === c.id ? null : c.id));
                       }}
                       className="absolute -translate-y-1/2 right-0 top-1/2 p-2.25 hidden group-hover:flex"
                     >
@@ -154,6 +166,7 @@ const Sidebar = () => {
                   </button>
                   {chatMenu === c.id && (
                     <ChatMenuDropdown
+                      ref={chatMenuRef}
                       onRename={() => setChatRename(c.id)}
                       onDelete={() => handleDeleteChat(c.id)}
                     />
