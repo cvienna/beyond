@@ -67,7 +67,7 @@ const Message = ({
                   onChange={(e) => setEditContent(e.target.value)}
                   value={editContent}
                   placeholder="Better get it right this time"
-                  className="flex px-3.5 py-2 w-full bg-light-surface-hover font-light rounded-2xl outline-none border border-light-border resize-none field-sizing-content placeholder:text-light-text-secondary"
+                  className="flex px-3.5 py-2 w-full bg-light-surface-hover text-[15px] font-light rounded-2xl outline-none border border-light-border resize-none field-sizing-content placeholder:text-light-text-secondary"
                 />
               </div>
               <div className="flex justify-between gap-4">
