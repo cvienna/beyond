@@ -13,6 +13,7 @@ import { client } from "@/lib/client";
 import { useChatStore } from "@/store/chat";
 import Tooltip from "./Tooltip";
 import ReactMarkdown from "react-markdown";
+import CodeBlock from "./CodeBlock";
 
 const Message = ({
   data,
@@ -122,7 +123,7 @@ const Message = ({
           )}
         </div>
       ) : (
-        <div className="flex flex-col gap-4 group">
+        <div className="flex flex-col gap-4 w-full group">
           {data.reasoningContent && (
             <div className="flex items-center gap-2">
               <span className="text-light-text-secondary select-none">
@@ -133,7 +134,20 @@ const Message = ({
             </div>
           )}
           <span className="font-light">
-            <ReactMarkdown>{data.content}</ReactMarkdown>
+            <ReactMarkdown
+              components={{
+                code({ className, children }) {
+                  const language = /language-(\w+)/.exec(className || "")?.[1];
+                  return (
+                    <CodeBlock language={language}>
+                      {String(children)}
+                    </CodeBlock>
+                  );
+                },
+              }}
+            >
+              {data.content}
+            </ReactMarkdown>
           </span>
           <div
             className={`flex items-center justify-start gap-2 opacity-0 transition-opacity

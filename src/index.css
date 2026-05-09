@@ -39,7 +39,13 @@ body {
     src: url("./assets/font/Hahmlet-VariableFont_wght.ttf") format("truetype");
 }
 
+@font-face {
+    font-family: "JetBrains Mono";
+    src: url("./assets/font/JetBrainsMono[wght].ttf") format("truetype");
+}
+
 @theme {
     --font-inter: "Inter", sans-serif;
     --font-hahmlet: "Hahmlet", sans-serif;
+    --font-jetbrains-mono: "JetBrains Mono", sans-serif;
 }
