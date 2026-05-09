@@ -1,4 +1,11 @@
-import { ChevronRight, Copy, Pencil, ThumbsDown, ThumbsUp } from "lucide-react";
+import {
+  ChevronRight,
+  CircleAlert,
+  Copy,
+  Pencil,
+  ThumbsDown,
+  ThumbsUp,
+} from "lucide-react";
 import type { Message } from "@server/schemas/message";
 import { useState } from "react";
 import Feedback from "./modal/Feedback";
@@ -51,38 +58,68 @@ const Message = ({
     >
       {/* Come back later to this - is key needed here or pass as a prop? ^^^ */}
       {data.role === "user" ? (
-        <div className="flex flex-col items-end gap-4 group">
-          <div className="px-4 py-2 max-w-100 bg-light-surface rounded-3xl border border-light-border">
-            {editMode ? (
-              <input
-                type="text"
-                onChange={(e) => setEditContent(e.target.value)}
-                value={editContent}
-                className="outline-none"
-              />
-            ) : (
-              <span className="font-light">{data.content}</span>
-            )}
-          </div>
-          <div className="flex justify-end items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-            <span className="text-sm text-light-text-secondary">
-              {new Date(data.createdAt).toLocaleTimeString()}
-            </span>
-            <button
-              onClick={() => setEditMode((prev) => !prev)}
-              className="relative p-1.5 rounded-full hover:bg-light-bg-hover transition-colors group/text-hover group/tooltip"
-            >
-              <Pencil className="size-4.25 text-light-text-secondary group-hover/text-hover:text-light-text-primary" />
-              <Tooltip label="Edit" position="top" />
-            </button>
-            <button
-              onClick={() => navigator.clipboard.writeText(data.content)}
-              className="relative p-1.5 rounded-full hover:bg-light-bg-hover transition-colors group/text-hover group/tooltip"
-            >
-              <Copy className="size-4.25 text-light-text-secondary group-hover/text-hover:text-light-text-primary" />
-              <Tooltip label="Copy" position="top" />
-            </button>
-          </div>
+        <div className="flex flex-col items-end gap-4 w-full group">
+          {editMode ? (
+            <div className="flex flex-col gap-3 p-3 w-full bg-light-surface rounded-3xl border border-light-border">
+              <div>
+                <textarea
+                  onChange={(e) => setEditContent(e.target.value)}
+                  value={editContent}
+                  placeholder="Better get it right this time"
+                  className="flex px-3.5 py-2 w-full bg-light-surface-hover font-light rounded-2xl outline-none border border-light-border resize-none field-sizing-content placeholder:text-light-text-secondary"
+                />
+              </div>
+              <div className="flex justify-between gap-4">
+                <div className="flex gap-2 text-light-text-secondary">
+                  <CircleAlert className="size-5" />
+                  <span className="flex text-[13px]">
+                    Editing this message will create a new conversation branch.
+                    You can switch between branches using the arrow navigation
+                    buttons.
+                  </span>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setEditMode(false)}
+                    className="px-5 py-1.5 bg-light-surface rounded-2xl border border-light-border cursor-pointer hover:bg-light-surface-hover transition-colors"
+                  >
+                    <span className="text-[15px]">Cancel</span>
+                  </button>
+                  <button className="px-5 py-1.5 bg-light-text-primary rounded-2xl cursor-pointer">
+                    <span className="text-[15px] text-light-bg">Submit</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="px-4 py-2 bg-light-surface rounded-3xl border border-light-border">
+                <span className="font-light">{data.content}</span>
+              </div>
+              <div className="flex justify-end items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <span className="text-sm text-light-text-secondary">
+                  {new Date(data.createdAt).toLocaleTimeString()}
+                </span>
+                <button
+                  onClick={() => {
+                    setEditContent(data.content);
+                    setEditMode(true);
+                  }}
+                  className="relative p-1.5 rounded-full hover:bg-light-bg-hover transition-colors group/text-hover group/tooltip"
+                >
+                  <Pencil className="size-4.25 text-light-text-secondary group-hover/text-hover:text-light-text-primary" />
+                  <Tooltip label="Edit" position="top" />
+                </button>
+                <button
+                  onClick={() => navigator.clipboard.writeText(data.content)}
+                  className="relative p-1.5 rounded-full hover:bg-light-bg-hover transition-colors group/text-hover group/tooltip"
+                >
+                  <Copy className="size-4.25 text-light-text-secondary group-hover/text-hover:text-light-text-primary" />
+                  <Tooltip label="Copy" position="top" />
+                </button>
+              </div>
+            </>
+          )}
         </div>
       ) : (
         <div className="flex flex-col gap-4 group">

@@ -68,7 +68,7 @@ const MessageInput = ({
           //     handleSubmit();
           //   }
           // }}
-          placeholder="Search..."
+          placeholder="Ask anything"
           className="px-5.5 pt-4.25 pb-2 w-full max-h-64 placeholder:text-light-text-secondary font-light resize-none field-sizing-content outline-none"
         />
       </div>
