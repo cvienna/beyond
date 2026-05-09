@@ -59,12 +59,15 @@ const MessageInput = ({
         <textarea
           value={data[target].prompt}
           onChange={(e) => setPrompt(target, e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey && !isStreaming) {
-              e.preventDefault();
-              handleSubmit();
-            }
-          }}
+          // NOTE: Not sure how I feel about this feature
+          // Keeping it in case ever change my mind.
+          //
+          // onKeyDown={(e) => {
+          //   if (e.key === "Enter" && !e.shiftKey && !isStreaming) {
+          //     e.preventDefault();
+          //     handleSubmit();
+          //   }
+          // }}
           placeholder="Search..."
           className="px-5.5 pt-4.25 pb-2 w-full max-h-64 placeholder:text-light-text-secondary font-light resize-none field-sizing-content outline-none"
         />

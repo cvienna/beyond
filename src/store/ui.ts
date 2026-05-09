@@ -19,7 +19,7 @@ export const useUiStore = create<UiState>((set) => {
       set({ route });
     },
 
-    sidebar: true,
+    sidebar: false,
     toggleSidebar() {
       set((state) => ({ sidebar: !state.sidebar }));
     },

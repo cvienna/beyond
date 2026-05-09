@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
   Ellipsis,
@@ -60,10 +60,11 @@ const ChatMenuDropdown = ({
 };
 
 const Sidebar = () => {
-  const { route, navigate } = useUiStore();
+  const { route, navigate, sidebar, toggleSidebar } = useUiStore();
   const { chats, setChats, updateChat, removeChat } = useChatStore();
   const { setRecords } = useMessageInputStore();
 
+  const chatMenuRef = useRef<HTMLDivElement | null>(null);
   const [chatMenu, setChatMenu] = useState<string | null>(null);
   const [chatRename, setChatRename] = useState<string | null>(null);
 
@@ -101,83 +102,91 @@ const Sidebar = () => {
   };
 
   return (
-    <div
-      className="flex flex-col justify-between h-screen w-[256px] bg-light-surface border-r border-light-border"
-      id="draggable"
-    >
-      <div>
-        <div className="h-14" />
-        <div className="flex flex-col gap-1 px-2">
-          <button
-            onClick={() => navigate({ page: "home" })}
-            className={`flex gap-3 items-center p-2 w-full rounded-[14px] transition-colors hover:text-light-text-primary
+    <>
+      <div
+        className="fixed flex flex-col justify-between h-screen w-[256px] bg-light-surface border-r border-light-border lg:static z-100"
+        id="draggable"
+      >
+        <div>
+          <div className="h-14" />
+          <div className="flex flex-col gap-1 px-2">
+            <button
+              onClick={() => navigate({ page: "home" })}
+              className={`flex gap-3 items-center p-2 w-full rounded-[14px] transition-colors hover:text-light-text-primary
               ${route.page === "home" ? "bg-light-surface-hover text-light-text-primary" : "text-light-text-secondary hover:bg-light-surface-hover"}
             `}
-          >
-            <Plus className="size-4.75" />
-            <span className="text-sm">New Chat</span>
-          </button>
-          <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover text-light-text-secondary hover:text-light-text-primary transition-colors">
-            <Search className="size-4.75" />
-            <span className="text-sm">Search</span>
-          </button>
-          <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover text-light-text-secondary hover:text-light-text-primary transition-colors">
-            <MessageCircle className="size-4.75" />
-            <span className="text-sm">Chats</span>
-          </button>
-        </div>
-        <div className="h-8" />
-        <div className="flex flex-col gap-1 px-2">
-          {chats &&
-            chats.map((c) => (
-              <div className="relative">
-                <button
-                  key={c.id}
-                  onClick={() => navigate({ page: "chat", chatId: c.id })}
-                  className={`flex gap-3 items-center p-2 h-9 w-full rounded-[14px] hover:text-light-text-primary transition-colors group
+            >
+              <Plus className="size-4.75" />
+              <span className="text-sm">New Chat</span>
+            </button>
+            <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover text-light-text-secondary hover:text-light-text-primary transition-colors">
+              <Search className="size-4.75" />
+              <span className="text-sm">Search</span>
+            </button>
+            <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover text-light-text-secondary hover:text-light-text-primary transition-colors">
+              <MessageCircle className="size-4.75" />
+              <span className="text-sm">Chats</span>
+            </button>
+          </div>
+          <div className="h-8" />
+          <div className="flex flex-col gap-1 px-2">
+            {chats &&
+              chats.map((c) => (
+                <div className="relative">
+                  <button
+                    key={c.id}
+                    onClick={() => navigate({ page: "chat", chatId: c.id })}
+                    className={`flex gap-3 items-center p-2 h-9 w-full rounded-[14px] hover:text-light-text-primary transition-colors group
                     ${route.page === "chat" && route.chatId === c.id ? "bg-light-surface-hover text-light-text-primary" : "text-light-text-secondary hover:bg-light-surface-hover"}
                   `}
-                >
-                  <span className="flex text-lg">{c.icon}</span>
-                  <span className="text-sm">{c.title}</span>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setChatMenu(c.id);
-                    }}
-                    className="absolute -translate-y-1/2 right-0 top-1/2 p-2.25 hidden group-hover:flex"
                   >
-                    <Ellipsis className="size-4.5" />
+                    <span className="flex text-lg">{c.icon}</span>
+                    <span className="text-sm">{c.title}</span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setChatMenu(c.id);
+                      }}
+                      className="absolute -translate-y-1/2 right-0 top-1/2 p-2.25 hidden group-hover:flex"
+                    >
+                      <Ellipsis className="size-4.5" />
+                    </button>
                   </button>
-                </button>
-                {chatMenu === c.id && (
-                  <ChatMenuDropdown
-                    onRename={() => setChatRename(c.id)}
-                    onDelete={() => handleDeleteChat(c.id)}
-                  />
-                )}
-              </div>
-            ))}
+                  {chatMenu === c.id && (
+                    <ChatMenuDropdown
+                      onRename={() => setChatRename(c.id)}
+                      onDelete={() => handleDeleteChat(c.id)}
+                    />
+                  )}
+                </div>
+              ))}
+          </div>
         </div>
+        <div className="px-2 py-3">
+          <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover text-light-text-secondary hover:text-light-text-primary transition-colors">
+            <Settings className="size-4.75" />
+            <span className="text-sm">Settings</span>
+          </button>
+        </div>
+        {/* Might be safer to pass chatId to component, but should in theory never fail */}
+        {chatRename && (
+          <RenameChat
+            prevTitle={chats?.find((c) => c.id === chatRename)?.title ?? ""}
+            onCancel={() => setChatRename(null)}
+            onSubmit={(title) => {
+              handleUpdateChat(chatRename, { title });
+              setChatRename(null);
+            }}
+          />
+        )}
       </div>
-      <div className="px-2 py-3">
-        <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover text-light-text-secondary hover:text-light-text-primary transition-colors">
-          <Settings className="size-4.75" />
-          <span className="text-sm">Settings</span>
-        </button>
-      </div>
-      {/* Might be safer to pass chatId to component, but should in theory never fail */}
-      {chatRename && (
-        <RenameChat
-          prevTitle={chats?.find((c) => c.id === chatRename)?.title ?? ""}
-          onCancel={() => setChatRename(null)}
-          onSubmit={(title) => {
-            handleUpdateChat(chatRename, { title });
-            setChatRename(null);
-          }}
+      {sidebar && (
+        <div
+          onClick={toggleSidebar}
+          className="fixed inset-0 bg-linear-to-r from-neutral-500/50 to-neutral-500/1 lg:hidden z-90"
         />
       )}
-    </div>
+    </>
   );
 };
 

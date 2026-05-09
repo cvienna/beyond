@@ -10,17 +10,15 @@ function App() {
   const { route, sidebar } = useUiStore();
 
   return (
-    <>
-      <main className="flex bg-light-bg text-light-text-primary dark">
-        {sidebar && <Sidebar />}
-        <Navbar width={256} />
-        <div className="flex flex-1 flex-col h-screen overflow-y-auto">
-          {route.page === "home" && <Home />}
-          {route.page === "chat" && <Chat />}
-          {route.page === "settings" && <Settings />}
-        </div>
-      </main>
-    </>
+    <main className="flex bg-light-bg text-light-text-primary">
+      {sidebar && <Sidebar />}
+      <Navbar width={256} />
+      <div className="flex flex-1 flex-col h-screen overflow-y-auto">
+        {route.page === "home" && <Home />}
+        {route.page === "chat" && <Chat />}
+        {route.page === "settings" && <Settings />}
+      </div>
+    </main>
   );
 }
 
