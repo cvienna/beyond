@@ -131,14 +131,14 @@ const Sidebar = () => {
               <Plus className="size-4.75" />
               <span className="text-sm">New Chat</span>
             </button>
-            <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover text-light-text-secondary hover:text-light-text-primary transition-colors">
+            {/*<button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover text-light-text-secondary hover:text-light-text-primary transition-colors">
               <Search className="size-4.75" />
               <span className="text-sm">Search</span>
             </button>
             <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover text-light-text-secondary hover:text-light-text-primary transition-colors">
               <MessageCircle className="size-4.75" />
               <span className="text-sm">Chats</span>
-            </button>
+            </button>*/}
           </div>
           <div className="h-8" />
           <div className="flex flex-col gap-1 px-2">
