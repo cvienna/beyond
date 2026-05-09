@@ -64,8 +64,11 @@ const app = new Hono().post(
     let ttft: number | null = null;
     let content: string = "";
     let reasoningContent: string | null = null;
+    let titlePromise: Promise<string> | null;
 
-    const titlePromise = generateTitle(prompt);
+    if (!chatId) {
+      titlePromise = generateTitle(prompt);
+    }
 
     return streamSSE(c, async (s) => {
       if (chat) {
@@ -118,15 +121,18 @@ const app = new Hono().post(
           });
         } else if (chunk.type === "finish") {
           const now = Date.now();
-          const title = await titlePromise;
+          if (titlePromise) {
+            const title = await titlePromise;
 
-          await writeSSE(s, {
-            event: "chat.update",
-            data: {
-              completionId,
-              title,
-            },
-          });
+            await writeSSE(s, {
+              event: "chat.update",
+              data: {
+                completionId,
+                title: title ?? "Untitled",
+              },
+            });
+            await updateChat(chatId ? chatId : (chat?.id ?? ""), { title });
+          }
           await writeSSE(s, {
             event: "chat.completion.stop",
             data: {
@@ -152,7 +158,6 @@ const app = new Hono().post(
             ttft: ttft,
             duration: (now - start - (ttft ?? 0)) / 1000,
           });
-          await updateChat(chatId ? chatId : (chat?.id ?? ""), { title });
         }
       }
     });
