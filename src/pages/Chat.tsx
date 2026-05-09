@@ -36,7 +36,7 @@ const Chat = () => {
   return (
     <>
       <div className="flex flex-col mx-auto h-screen xl:max-w-3xl lg:max-w-2xl md:max-w-xl max-w-lg w-full">
-        <div className="fixed top-0 left-1/2 -translate-x-1/2 flex flex-col xl:max-w-3xl lg:max-w-2xl md:max-w-xl max-w-lg w-full">
+        <div className="sticky top-0 flex flex-col w-full">
           <div
             className="w-full bg-light-bg"
             style={{
