@@ -13,6 +13,7 @@ import { createChat } from "@server/repository/chat";
 import { createMessage, getMessagesByChat } from "@server/repository/message";
 import { Chat } from "@server/schemas/chat";
 import { ModelId } from "@shared/models";
+import { randomEmoji } from "@server/utils/completion";
 
 const app = new Hono().post(
   "/",
@@ -43,7 +44,7 @@ const app = new Hono().post(
     } else {
       chat = await createChat({
         title: "Untitled",
-        icon: "🪼",
+        icon: randomEmoji(),
       });
     }
 
