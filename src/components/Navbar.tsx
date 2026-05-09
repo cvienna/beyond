@@ -39,7 +39,7 @@ const Navbar = ({ width }: { width: number }) => {
       >
         <button
           onClick={toggleSidebar}
-          className="relative p-1.5 rounded-full hover:bg-light-surface-hover transition-colors group/tooltip"
+          className="relative p-1.5 text-light-text-secondary rounded-full hover:bg-light-surface-hover hover:text-light-text-primary transition-colors group/tooltip"
         >
           <SidebarIcon className="size-4.5" />
           <Tooltip label="Sidebar" position="bottom" />
@@ -48,16 +48,12 @@ const Navbar = ({ width }: { width: number }) => {
           <>
             <button
               onClick={() => navigate({ page: "home" })}
-              className="relative p-1.5 rounded-full hover:bg-light-surface-hover transition-colors group/tooltip"
+              className="relative p-1.5 text-light-text-secondary rounded-full hover:bg-light-surface-hover hover:text-light-text-primary transition-colors group/tooltip"
             >
               <SquarePen className="size-4.5" />
               <Tooltip label="New Chat" position="bottom" />
             </button>
-            <span
-              className={`pl-1 text-sm
-                ${"text-neutral-500"}
-              `}
-            >
+            <span className="pl-1 text-sm text-light-text-secondary">
               {currentChat.title}
             </span>
           </>

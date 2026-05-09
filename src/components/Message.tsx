@@ -88,10 +88,10 @@ const Message = ({
         <div className="flex flex-col gap-4 group">
           {data.reasoningContent && (
             <div className="flex items-center gap-2">
-              <span className="text-neutral-500 select-none">
+              <span className="text-light-text-secondary select-none">
                 Thought for 14s
               </span>
-              <ChevronRight className="size-4.75 text-neutral-500" />
+              <ChevronRight className="size-4.75 text-light-text-secondary" />
               {/*<span className="font-light">{data.reasoningContent}</span>*/}
             </div>
           )}

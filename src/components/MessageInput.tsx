@@ -66,7 +66,7 @@ const MessageInput = ({
             }
           }}
           placeholder="Search..."
-          className="px-5.5 pt-4.25 pb-2 w-full max-h-64 placeholder:text-neutral-500 font-light resize-none field-sizing-content outline-none"
+          className="px-5.5 pt-4.25 pb-2 w-full max-h-64 placeholder:text-light-text-secondary font-light resize-none field-sizing-content outline-none"
         />
       </div>
       <div className="flex justify-between px-3.75 pb-3.75 w-full">
@@ -126,7 +126,7 @@ const MessageInput = ({
                     </span>
                   </button>
                   {i < arr.length - 1 && (
-                    <div className="h-px w-full bg-neutral-300" />
+                    <div className="h-px w-full bg-light-border" />
                   )}
                 </div>
               ))}
@@ -141,7 +141,7 @@ const MessageInput = ({
             className="select-none flex gap-2 items-center px-1.5 h-7.5 rounded-full cursor-pointer hover:bg-light-surface-hover transition-colors"
           >
             <img src={currentModel.icon} className="size-5" />
-            <span className="pr-1.5 text-sm text-neutral-500">
+            <span className="pr-1.5 text-sm text-light-text-secondary">
               {currentModel.name}
             </span>
           </div>

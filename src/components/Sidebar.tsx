@@ -18,6 +18,47 @@ import { chatResponseSchema } from "@shared/schemas/chat";
 import RenameChat from "./modal/RenameChat";
 import { UpdateChatInput } from "@server/schemas/chat";
 
+const ChatMenuDropdown = ({
+  onRename,
+  onDelete,
+}: {
+  onRename: () => void;
+  onDelete: () => void;
+}) => {
+  return (
+    <div className="absolute translate-y-full -bottom-2 right-0 z-100 flex flex-col gap-1 p-2 w-48 rounded-3xl bg-light-surface border border-light-border">
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onRename();
+        }}
+        className="flex items-center gap-2 px-2.5 py-1.5 text-light-text-secondary rounded-2xl hover:bg-light-surface-hover hover:text-light-text-primary transition-colors"
+      >
+        <Pencil className="size-4.5" />
+        <span className="text-[15px]">Rename</span>
+      </button>
+      <button
+        onClick={(e) => e.stopPropagation()}
+        className="flex items-center gap-2 px-2.5 py-1.5 text-light-text-secondary rounded-2xl hover:bg-light-surface-hover hover:text-light-text-primary transition-colors"
+      >
+        <Smile className="size-4.5" />
+        <span className="text-[15px]">Change Icon</span>
+      </button>
+      <div className="h-px w-full bg-light-border" />
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onDelete();
+        }}
+        className="flex items-center gap-2 px-2.5 py-1.5 text-red-400/70 rounded-2xl hover:bg-light-surface-hover hover:text-red-400 transition-colors"
+      >
+        <Package className="size-4.5" />
+        <span className="text-[15px]">Archive</span>
+      </button>
+    </div>
+  );
+};
+
 const Sidebar = () => {
   const { route, navigate } = useUiStore();
   const { chats, setChats, updateChat, removeChat } = useChatStore();
@@ -69,18 +110,18 @@ const Sidebar = () => {
         <div className="flex flex-col gap-1 px-2">
           <button
             onClick={() => navigate({ page: "home" })}
-            className={`flex gap-3 items-center p-2 w-full rounded-[14px] transition-colors
-              ${route.page === "home" ? "bg-light-surface-hover" : "hover:bg-light-surface-hover"}
+            className={`flex gap-3 items-center p-2 w-full rounded-[14px] transition-colors hover:text-light-text-primary
+              ${route.page === "home" ? "bg-light-surface-hover text-light-text-primary" : "text-light-text-secondary hover:bg-light-surface-hover"}
             `}
           >
             <Plus className="size-4.75" />
             <span className="text-sm">New Chat</span>
           </button>
-          <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover transition-colors">
+          <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover text-light-text-secondary hover:text-light-text-primary transition-colors">
             <Search className="size-4.75" />
             <span className="text-sm">Search</span>
           </button>
-          <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover transition-colors">
+          <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover text-light-text-secondary hover:text-light-text-primary transition-colors">
             <MessageCircle className="size-4.75" />
             <span className="text-sm">Chats</span>
           </button>
@@ -89,62 +130,38 @@ const Sidebar = () => {
         <div className="flex flex-col gap-1 px-2">
           {chats &&
             chats.map((c) => (
-              <button
-                key={c.id}
-                onClick={() => navigate({ page: "chat", chatId: c.id })}
-                className={`relative flex gap-3 items-center p-2 h-9 w-full rounded-[14px] transition-colors group
-              ${route.page === "chat" && route.chatId === c.id ? "bg-light-surface-hover" : "hover:bg-light-surface-hover"}
-            `}
-              >
-                <span className="flex text-lg">{c.icon}</span>
-                <span className="text-sm">{c.title}</span>
+              <div className="relative">
                 <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setChatMenu(c.id);
-                  }}
-                  className="absolute -translate-y-1/2 right-0 top-1/2 p-2.25 hidden group-hover:flex"
+                  key={c.id}
+                  onClick={() => navigate({ page: "chat", chatId: c.id })}
+                  className={`flex gap-3 items-center p-2 h-9 w-full rounded-[14px] hover:text-light-text-primary transition-colors group
+                    ${route.page === "chat" && route.chatId === c.id ? "bg-light-surface-hover text-light-text-primary" : "text-light-text-secondary hover:bg-light-surface-hover"}
+                  `}
                 >
-                  <Ellipsis className="size-4.5" />
+                  <span className="flex text-lg">{c.icon}</span>
+                  <span className="text-sm">{c.title}</span>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setChatMenu(c.id);
+                    }}
+                    className="absolute -translate-y-1/2 right-0 top-1/2 p-2.25 hidden group-hover:flex"
+                  >
+                    <Ellipsis className="size-4.5" />
+                  </button>
                 </button>
                 {chatMenu === c.id && (
-                  <div className="absolute translate-y-full -bottom-2 right-0 z-100 flex flex-col gap-1 p-2 w-48 rounded-3xl bg-light-surface border border-light-border">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setChatRename(c.id);
-                      }}
-                      className="flex items-center gap-2 px-2.5 py-1.5 rounded-2xl hover:bg-light-surface-hover"
-                    >
-                      <Pencil className="size-4.5" />
-                      <span className="text-[15px]">Rename</span>
-                    </button>
-                    <button
-                      onClick={(e) => e.stopPropagation()}
-                      className="flex items-center gap-2 px-2.5 py-1.5 rounded-2xl hover:bg-light-surface-hover"
-                    >
-                      <Smile className="size-4.5" />
-                      <span className="text-[15px]">Change Icon</span>
-                    </button>
-                    <div className="h-px w-full bg-light-border" />
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteChat(c.id);
-                      }}
-                      className="flex items-center gap-2 px-2.5 py-1.5 text-red-400 rounded-2xl hover:bg-light-surface-hover"
-                    >
-                      <Package className="size-4.5" />
-                      <span className="text-[15px]">Archive</span>
-                    </button>
-                  </div>
+                  <ChatMenuDropdown
+                    onRename={() => setChatRename(c.id)}
+                    onDelete={() => handleDeleteChat(c.id)}
+                  />
                 )}
-              </button>
+              </div>
             ))}
         </div>
       </div>
       <div className="px-2 py-3">
-        <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover transition-colors">
+        <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover text-light-text-secondary hover:text-light-text-primary transition-colors">
           <Settings className="size-4.75" />
           <span className="text-sm">Settings</span>
         </button>
