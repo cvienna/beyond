@@ -69,18 +69,18 @@ const Sidebar = () => {
         <div className="flex flex-col gap-1 px-2">
           <button
             onClick={() => navigate({ page: "home" })}
-            className={`flex gap-3 items-center p-2 w-full rounded-[14px]
+            className={`flex gap-3 items-center p-2 w-full rounded-[14px] transition-colors
               ${route.page === "home" ? "bg-light-surface-hover" : "hover:bg-light-surface-hover"}
             `}
           >
             <Plus className="size-4.75" />
             <span className="text-sm">New Chat</span>
           </button>
-          <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover">
+          <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover transition-colors">
             <Search className="size-4.75" />
             <span className="text-sm">Search</span>
           </button>
-          <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover">
+          <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover transition-colors">
             <MessageCircle className="size-4.75" />
             <span className="text-sm">Chats</span>
           </button>
@@ -92,7 +92,7 @@ const Sidebar = () => {
               <button
                 key={c.id}
                 onClick={() => navigate({ page: "chat", chatId: c.id })}
-                className={`relative flex gap-3 items-center p-2 h-9 w-full rounded-[14px] group
+                className={`relative flex gap-3 items-center p-2 h-9 w-full rounded-[14px] transition-colors group
               ${route.page === "chat" && route.chatId === c.id ? "bg-light-surface-hover" : "hover:bg-light-surface-hover"}
             `}
               >
@@ -144,7 +144,7 @@ const Sidebar = () => {
         </div>
       </div>
       <div className="px-2 py-3">
-        <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover">
+        <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-light-surface-hover transition-colors">
           <Settings className="size-4.75" />
           <span className="text-sm">Settings</span>
         </button>
