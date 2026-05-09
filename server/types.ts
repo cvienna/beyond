@@ -1,10 +1,15 @@
-import { Chat } from "./schemas/chat";
+import { Chat, UpdateChatInput } from "./schemas/chat";
 import { Message } from "./schemas/message";
 
-export type ChatEvent = {
-  event: "chat.create";
-  data: Chat & { completionId: string };
-};
+export type ChatEvent =
+  | {
+      event: "chat.create";
+      data: Chat & { completionId: string };
+    }
+  | {
+      event: "chat.update";
+      data: UpdateChatInput & { completionId: string };
+    };
 
 export type ChatMessageEvent = {
   event: "chat.message.create";

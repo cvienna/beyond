@@ -9,11 +9,12 @@ import { zValidator } from "@hono/zod-validator";
 import { streamText } from "ai";
 import { aiGateway } from "@server/lib/aiGateway";
 
-import { createChat } from "@server/repository/chat";
+import { createChat, updateChat } from "@server/repository/chat";
 import { createMessage, getMessagesByChat } from "@server/repository/message";
 import { Chat } from "@server/schemas/chat";
 import { ModelId } from "@shared/models";
 import { randomEmoji } from "@server/utils/completion";
+import { generateTitle } from "@server/services/completion";
 
 const app = new Hono().post(
   "/",
@@ -64,6 +65,8 @@ const app = new Hono().post(
     let ttft: number | null = null;
     let content: string = "";
     let reasoningContent: string | null = null;
+
+    const titlePromise = generateTitle(prompt);
 
     return streamSSE(c, async (s) => {
       if (chat) {
@@ -116,7 +119,15 @@ const app = new Hono().post(
           });
         } else if (chunk.type === "finish") {
           const now = Date.now();
+          const title = await titlePromise;
 
+          await writeSSE(s, {
+            event: "chat.update",
+            data: {
+              completionId,
+              title,
+            },
+          });
           await writeSSE(s, {
             event: "chat.completion.stop",
             data: {
@@ -129,6 +140,7 @@ const app = new Hono().post(
               },
             },
           });
+
           await createMessage({
             id: completionId,
             chatId: chatId ? chatId : (chat?.id ?? ""),
@@ -141,6 +153,7 @@ const app = new Hono().post(
             ttft: ttft,
             duration: (now - start - (ttft ?? 0)) / 1000,
           });
+          await updateChat(chatId ? chatId : (chat?.id ?? ""), { title });
         }
       }
     });
