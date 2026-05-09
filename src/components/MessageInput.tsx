@@ -139,7 +139,7 @@ const MessageInput = ({
           </div>
           <button
             onClick={handleSubmit}
-            className="p-1.5 bg-black text-white rounded-full cursor-pointer"
+            className="p-1.5 bg-light-text-primary text-light-bg rounded-full cursor-pointer"
           >
             <ArrowUp className="size-4.5" />
           </button>

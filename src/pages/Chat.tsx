@@ -38,12 +38,12 @@ const Chat = () => {
       <div className="flex flex-col mx-auto h-screen xl:max-w-3xl lg:max-w-2xl md:max-w-xl max-w-lg w-full">
         <div className="sticky top-0 flex flex-col w-full">
           <div
-            className="w-full bg-white"
+            className="w-full bg-light-bg"
             style={{
               height: `${navbarHeight}px`,
             }}
           />
-          <div className="w-full h-8 bg-linear-to-b from-white to-white/1" />
+          <div className="w-full h-8 bg-linear-to-b from-light-bg to-light-bg/1" />
         </div>
 
         <div className="flex flex-col flex-1 gap-8 pb-24">
@@ -52,7 +52,7 @@ const Chat = () => {
               <Message data={m} isLast={i === arr.length - 1} />
             ))}
         </div>
-        <div className="sticky bottom-0 flex bg-white">
+        <div className="sticky bottom-0 flex bg-light-bg">
           <MessageInput size="lg" inline />
         </div>
       </div>
