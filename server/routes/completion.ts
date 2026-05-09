@@ -13,8 +13,7 @@ import { createChat, updateChat } from "@server/repository/chat";
 import { createMessage, getMessagesByChat } from "@server/repository/message";
 import { Chat } from "@server/schemas/chat";
 import { ModelId } from "@shared/models";
-import { randomEmoji } from "@server/services/completion";
-import { generateTitle } from "@server/services/completion";
+import { randomEmoji, generateTitle } from "@server/services/completion";
 
 const app = new Hono().post(
   "/",

@@ -18,13 +18,8 @@ export function randomEmoji() {
 export async function generateTitle(prompt: string) {
   const response = await generateText({
     model: aiGateway("accounts/fireworks/models/gpt-oss-20b"),
-    messages: [
-      {
-        role: "system",
-        content: "Generate a short 3-4 word title for this prompt",
-      },
-      { role: "user", content: prompt },
-    ],
+    system: "Generate a short 3-4 word title for this prompt",
+    prompt,
   });
 
   return response.text;
