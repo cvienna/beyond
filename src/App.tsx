@@ -11,7 +11,7 @@ function App() {
 
   return (
     <>
-      <main className="flex">
+      <main className="flex bg-light-bg text-light-text-primary dark">
         {sidebar && <Sidebar />}
         <Navbar width={256} />
         <div className="flex flex-1 flex-col h-screen overflow-y-auto">
