@@ -30,6 +30,14 @@ export const useCompletionStore = create<CompletionState>(() => {
             addRecord(event.data.id);
             addStream(event.data.completionId, event.data.id);
             navigate({ page: "chat", chatId: event.data.id });
+          } else if (event.event === "chat.update") {
+            const { updateChat } = useChatStore.getState();
+            const { activeStreams } = useStreamingStore.getState();
+
+            updateChat(
+              activeStreams[event.data.completionId].chatId,
+              event.data,
+            );
           } else if (event.event === "chat.message.create") {
             const { addMessage } = useChatStore.getState();
             const { activeStreams, addStream } = useStreamingStore.getState();
