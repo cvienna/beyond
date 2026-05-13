@@ -102,7 +102,7 @@ const Sidebar = () => {
                   `}
                   >
                     <span className="flex text-lg">{c.icon}</span>
-                    <span className="text-sm">{c.title}</span>
+                    <span className="text-sm truncate">{c.title}</span>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
