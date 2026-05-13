@@ -15,6 +15,8 @@ import { getModel, ModelId, MODELS } from "@shared/models";
 import { useCompletionStore } from "@/store/completion";
 import Tooltip from "./Tooltip";
 import { useStreamingStore } from "@/store/streaming";
+import Menu from "./menu/Menu";
+import MenuGroup from "./menu/Group";
 
 const MessageInput = ({
   size,
@@ -116,27 +118,28 @@ const MessageInput = ({
         </div>
         <div className="relative flex items-center gap-2">
           {modelDropdown && (
-            <div className="select-none absolute -top-1 -translate-y-full flex flex-col gap-2 p-2 max-h-60 w-56 overflow-auto cursor-default bg-light-surface rounded-3xl border border-light-border hide-scrollbar">
-              {Object.entries(MODELS).map(([id, model], i, arr) => (
-                <div key={i} className="flex flex-col gap-2">
-                  <button
-                    key={id}
-                    onClick={() => setModel(target, id as ModelId)}
-                    className={`flex items-center gap-2.5 px-2 py-2 rounded-2xl
-                        ${id === data[target].model ? "bg-light-surface-hover" : "hover:bg-light-surface-hover"}
-                      `}
-                  >
-                    <img src={getModel(id).icon} className="size-4.5" />
-                    <span className="flex whitespace-nowrap text-sm">
-                      {model.name}
-                    </span>
-                  </button>
-                  {i < arr.length - 1 && (
-                    <div className="h-px w-full bg-light-border" />
-                  )}
-                </div>
-              ))}
-            </div>
+            <Menu
+              alignment="top"
+              offset="start"
+              groups={[
+                ...Object.entries(MODELS).map(([id, model]) => (
+                  <MenuGroup>
+                    <button
+                      key={id}
+                      onClick={() => setModel(target, id as ModelId)}
+                      className={`flex items-center gap-2.5 px-2 py-2 rounded-2xl
+                      ${id === data[target].model ? "bg-light-surface-hover" : "hover:bg-light-surface-hover"}
+                    `}
+                    >
+                      <img src={getModel(id).icon} className="size-4.5" />
+                      <span className="flex whitespace-nowrap text-sm">
+                        {model.name}
+                      </span>
+                    </button>
+                  </MenuGroup>
+                )),
+              ]}
+            />
           )}
 
           <div

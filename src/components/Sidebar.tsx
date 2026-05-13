@@ -1,15 +1,6 @@
 import { forwardRef, useEffect, useRef, useState } from "react";
 
-import {
-  Ellipsis,
-  MessageCircle,
-  Package,
-  Pencil,
-  Plus,
-  Search,
-  Settings,
-  Smile,
-} from "lucide-react";
+import { Ellipsis, Package, Pencil, Plus, Settings, Smile } from "lucide-react";
 import { useUiStore } from "@/store/ui";
 import { useChatStore } from "@/store/chat";
 import { useMessageInputStore } from "@/store/messageInput";
@@ -17,50 +8,8 @@ import { client } from "@/lib/client";
 import { chatResponseSchema } from "@shared/schemas/chat";
 import RenameChat from "./modal/RenameChat";
 import { UpdateChatInput } from "@server/schemas/chat";
-
-const ChatMenuDropdown = forwardRef<
-  HTMLDivElement,
-  {
-    onRename: () => void;
-    onDelete: () => void;
-  }
->(({ onRename, onDelete }, ref) => {
-  return (
-    <div
-      ref={ref}
-      className="absolute translate-y-full -bottom-2 right-0 z-100 flex flex-col gap-1 p-2 w-48 rounded-3xl bg-light-surface border border-light-border"
-    >
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onRename();
-        }}
-        className="flex items-center gap-2 px-2.5 py-1.5 text-light-text-secondary rounded-2xl hover:bg-light-surface-hover hover:text-light-text-primary transition-colors"
-      >
-        <Pencil className="size-4.5" />
-        <span className="text-[15px]">Rename</span>
-      </button>
-      <button
-        onClick={(e) => e.stopPropagation()}
-        className="flex items-center gap-2 px-2.5 py-1.5 text-light-text-secondary rounded-2xl hover:bg-light-surface-hover hover:text-light-text-primary transition-colors"
-      >
-        <Smile className="size-4.5" />
-        <span className="text-[15px]">Change Icon</span>
-      </button>
-      <div className="h-px w-full bg-light-border" />
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onDelete();
-        }}
-        className="flex items-center gap-2 px-2.5 py-1.5 text-red-400/70 rounded-2xl hover:bg-light-surface-hover hover:text-red-400 transition-colors"
-      >
-        <Package className="size-4.5" />
-        <span className="text-[15px]">Archive</span>
-      </button>
-    </div>
-  );
-});
+import Menu from "./menu/Menu";
+import MenuGroup from "./menu/Group";
 
 const Sidebar = () => {
   const { route, navigate, sidebar, toggleSidebar } = useUiStore();
@@ -141,7 +90,7 @@ const Sidebar = () => {
             </button>*/}
           </div>
           <div className="h-8" />
-          <div className="flex flex-col gap-1 px-2">
+          <div className="relative flex flex-col gap-1 px-2">
             {chats &&
               chats.map((c) => (
                 <div className="relative">
@@ -165,10 +114,43 @@ const Sidebar = () => {
                     </button>
                   </button>
                   {chatMenu === c.id && (
-                    <ChatMenuDropdown
+                    <Menu
                       ref={chatMenuRef}
-                      onRename={() => setChatRename(c.id)}
-                      onDelete={() => handleDeleteChat(c.id)}
+                      alignment="bottom"
+                      offset="end"
+                      groups={[
+                        <MenuGroup>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setChatRename(c.id);
+                            }}
+                            className="flex items-center gap-2 px-2.5 py-1.5 text-light-text-secondary rounded-2xl hover:bg-light-surface-hover hover:text-light-text-primary transition-colors"
+                          >
+                            <Pencil className="size-4.5" />
+                            <span className="text-[15px]">Rename</span>
+                          </button>
+                          <button
+                            onClick={(e) => e.stopPropagation()}
+                            className="flex items-center gap-2 px-2.5 py-1.5 text-light-text-secondary rounded-2xl hover:bg-light-surface-hover hover:text-light-text-primary transition-colors"
+                          >
+                            <Smile className="size-4.5" />
+                            <span className="text-[15px]">Change Icon</span>
+                          </button>
+                        </MenuGroup>,
+                        <MenuGroup>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteChat(c.id);
+                            }}
+                            className="flex items-center gap-2 px-2.5 py-1.5 text-red-400/70 rounded-2xl hover:bg-light-surface-hover hover:text-red-400 transition-colors"
+                          >
+                            <Package className="size-4.5" />
+                            <span className="text-[15px]">Archive</span>
+                          </button>
+                        </MenuGroup>,
+                      ]}
                     />
                   )}
                 </div>
