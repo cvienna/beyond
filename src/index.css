@@ -8,6 +8,17 @@ body {
     font-weight: 350;
 }
 
+button {
+    -webkit-user-select: none;
+    user-select: none;
+}
+textarea {
+    &::placeholder {
+        -webkit-user-select: none;
+        user-select: none;
+    }
+}
+
 @theme {
     --color-light-bg: #fff;
     --color-light-bg-hover: #f2f2f2;
