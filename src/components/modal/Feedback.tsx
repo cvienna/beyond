@@ -16,8 +16,14 @@ const Feedback = ({
   const [description, setDescription] = useState("");
 
   return (
-    <div className="fixed inset-0 backdrop-blur-[1px] bg-neutral-500/10 z-100">
-      <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-4 px-6 py-5 w-xl bg-light-bg rounded-[28px] border border-light-border">
+    <div
+      onClick={onCancel}
+      className="fixed inset-0 backdrop-blur-[1px] bg-neutral-500/10 z-100"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-4 px-6 py-5 w-xl bg-light-bg rounded-[28px] border border-light-border"
+      >
         <h1 className="text-[22px]">Give {type} feedback</h1>
         {type === "negative" && (
           <div className="flex flex-col gap-2">
@@ -42,7 +48,7 @@ const Feedback = ({
         <div className="flex justify-end gap-2 w-full">
           <button
             onClick={onCancel}
-            className="px-5 py-1.5 bg-light-surface rounded-2xl border border-light-border cursor-pointer hover:bg-light-surface-hover transition-colors"
+            className="px-5 py-1.5 bg-light-surface rounded-2xl border border-light-border cursor-pointer hover:bg-light-bg-hover transition-colors"
           >
             <span className="text-[15px]">Cancel</span>
           </button>
