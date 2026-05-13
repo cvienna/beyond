@@ -108,7 +108,9 @@ const Sidebar = () => {
                         e.stopPropagation();
                         setChatMenu((prev) => (prev === c.id ? null : c.id));
                       }}
-                      className="absolute -translate-y-1/2 right-0 top-1/2 p-2.25 hidden group-hover:flex"
+                      className={`absolute -translate-y-1/2 right-0 top-1/2 p-2.25 bg-light-surface-hover rounded-[14px]
+                        ${chatMenu === c.id ? "flex" : "hidden group-hover:flex"}
+                      `}
                     >
                       <Ellipsis className="size-4.5" />
                     </button>
