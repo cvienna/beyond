@@ -187,7 +187,10 @@ const Message = ({
       {feedbackModal && (
         <Feedback
           type={feedbackModal}
-          onSubmit={(type, description) => handleSubmit(type, description)}
+          onSubmit={(type, description) => {
+            handleSubmit(type, description);
+            setFeedbackModal(null);
+          }}
           onCancel={() => setFeedbackModal(null)}
         />
       )}
