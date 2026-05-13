@@ -1,6 +1,13 @@
 import "../App.css";
 import { useState, useEffect } from "react";
-import { ArrowUp, Clock, LoaderCircle, Plus, Search } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  Clock,
+  LoaderCircle,
+  Plus,
+  Search,
+} from "lucide-react";
 import { useChatStore } from "@/store/chat";
 import { useMessageInputStore } from "@/store/messageInput";
 import { useUiStore } from "@/store/ui";
@@ -91,9 +98,6 @@ const MessageInput = ({
                 ${data[target].search ? "text-blue-600/65" : "text-light-text-secondary group-hover/text-hover:text-light-text-primary"}
               `}
             />
-            {/*{data[target].search && (
-              <span className="pr-2 text-sm">Search</span>
-            )}*/}
             <Tooltip label="Search" position="top" />
           </button>
           <button
@@ -107,9 +111,6 @@ const MessageInput = ({
                 ${data[target].reasoning ? "text-blue-600/65" : "text-light-text-secondary group-hover/text-hover:text-light-text-primary"}
               `}
             />
-            {/*{data[target].reasoning && (
-              <span className="pr-2 text-sm">Reasoning</span>
-            )}*/}
             <Tooltip label="Reasoning" position="top" />
           </button>
         </div>
