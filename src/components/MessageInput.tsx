@@ -11,9 +11,11 @@ import { useStreamingStore } from "@/store/streaming";
 
 const MessageInput = ({
   size,
+  onReturn,
   inline = false,
 }: {
   size: "sm" | "md" | "lg";
+  onReturn?: () => void;
   inline?: boolean;
 }) => {
   const { route } = useUiStore();
@@ -50,7 +52,7 @@ const MessageInput = ({
 
   return (
     <div
-      className={`flex flex-col w-full bg-light-surface rounded-4xl border border-light-border cursor-text
+      className={`relative flex flex-col w-full bg-light-surface rounded-4xl border border-light-border cursor-text
         ${inline && "-mt-6.5 mb-4"}
         ${size === "lg" ? "lg:max-w-3xl md:max-w-2xl max-w-160" : size === "md" ? "md:max-w-2xl max-w-160" : "max-w-160"}
       `}
@@ -163,6 +165,14 @@ const MessageInput = ({
           </button>
         </div>
       </div>
+      {onReturn && (
+        <button
+          onClick={onReturn}
+          className="absolute left-1/2 -translate-x-1/2 -top-3 -translate-y-full p-1.5 bg-light-surface text-light-text-secondary border border-light-border rounded-full hover:bg-light-surface-hover hover:text-light-text-primary transition-colors"
+        >
+          <ArrowDown className="size-4.5" />
+        </button>
+      )}
     </div>
   );
 };
