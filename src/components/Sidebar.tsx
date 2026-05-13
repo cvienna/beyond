@@ -98,8 +98,13 @@ const Sidebar = () => {
                     key={c.id}
                     onClick={() => navigate({ page: "chat", chatId: c.id })}
                     className={`flex gap-3 items-center p-2 h-9 w-full rounded-[14px] hover:text-light-text-primary transition-colors group
-                    ${route.page === "chat" && route.chatId === c.id ? "bg-light-surface-hover text-light-text-primary" : "text-light-text-secondary hover:bg-light-surface-hover"}
-                  `}
+                      ${
+                        chatMenu === c.id ||
+                        (route.page === "chat" && route.chatId === c.id)
+                          ? "bg-light-surface-hover text-light-text-primary"
+                          : "text-light-text-secondary hover:bg-light-surface-hover"
+                      }
+                    `}
                   >
                     <span className="flex text-lg">{c.icon}</span>
                     <span className="text-sm truncate">{c.title}</span>
@@ -108,8 +113,8 @@ const Sidebar = () => {
                         e.stopPropagation();
                         setChatMenu((prev) => (prev === c.id ? null : c.id));
                       }}
-                      className={`absolute -translate-y-1/2 right-0 top-1/2 p-2.25 bg-light-surface-hover rounded-[14px]
-                        ${chatMenu === c.id ? "flex" : "hidden group-hover:flex"}
+                      className={`absolute -translate-y-1/2 right-0 top-1/2 flex p-2.25 bg-light-surface-hover rounded-[14px] transition-opacity
+                        ${chatMenu !== c.id && "opacity-0 group-hover:opacity-100"}
                       `}
                     >
                       <Ellipsis className="size-4.5" />
