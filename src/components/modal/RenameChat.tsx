@@ -12,7 +12,10 @@ const RenameChat = ({
   const [title, setTitle] = useState(prevTitle);
 
   return (
-    <div className="fixed inset-0 backdrop-blur-[1px] bg-neutral-500/10 z-100">
+    <div
+      onClick={onCancel}
+      className="fixed inset-0 backdrop-blur-[1px] bg-neutral-500/10 z-100"
+    >
       <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-4 px-6 py-5 w-xl bg-light-bg rounded-[28px] border border-light-border">
         <h1 className="text-[22px]">Rename chat</h1>
         <div className="flex flex-col gap-2">
