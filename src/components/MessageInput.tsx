@@ -11,12 +11,13 @@ import {
 import { useChatStore } from "@/store/chat";
 import { useMessageInputStore } from "@/store/messageInput";
 import { useUiStore } from "@/store/ui";
-import { getModel, ModelId, MODELS } from "@shared/models";
+import { getModel, ModelId } from "@shared/models";
 import { useCompletionStore } from "@/store/completion";
 import Tooltip from "./Tooltip";
 import { useStreamingStore } from "@/store/streaming";
 import Menu from "./menu/Menu";
 import MenuGroup from "./menu/Group";
+import { getGroupedModels } from "@/utils/models";
 
 const MessageInput = ({
   size,
@@ -122,20 +123,22 @@ const MessageInput = ({
               alignment="top"
               offset="start"
               groups={[
-                ...Object.entries(MODELS).map(([id, model]) => (
+                ...Object.entries(getGroupedModels()).map(([_, models]) => (
                   <MenuGroup>
-                    <button
-                      key={id}
-                      onClick={() => setModel(target, id as ModelId)}
-                      className={`flex items-center gap-2.5 px-2 py-2 rounded-2xl
-                      ${id === data[target].model ? "bg-light-surface-hover" : "hover:bg-light-surface-hover"}
-                    `}
-                    >
-                      <img src={getModel(id).icon} className="size-4.5" />
-                      <span className="flex whitespace-nowrap text-sm">
-                        {model.name}
-                      </span>
-                    </button>
+                    {...Object.entries(models).map(([id, model]) => (
+                      <button
+                        key={id}
+                        onClick={() => setModel(target, id as ModelId)}
+                        className={`flex items-center gap-2.5 px-2 py-2 rounded-2xl
+                          ${id === data[target].model ? "bg-light-surface-hover" : "hover:bg-light-surface-hover"}
+                        `}
+                      >
+                        <img src={getModel(id).icon} className="size-4.5" />
+                        <span className="flex whitespace-nowrap text-sm">
+                          {model.name}
+                        </span>
+                      </button>
+                    ))}
                   </MenuGroup>
                 )),
               ]}
