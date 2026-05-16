@@ -7,7 +7,7 @@ const Tooltip = ({
 }) => {
   return (
     <div
-      className={`absolute px-2.5 py-1.25 bg-light-text-primary rounded-[11px] cursor-default hidden group-hover/tooltip:flex
+      className={`absolute px-2.5 py-1.25 bg-text-primary rounded-[11px] cursor-default hidden group-hover/tooltip:flex
         ${position === "top" && "-top-2 -translate-y-full left-1/2 -translate-x-1/2"}
         ${position === "bottom" && "-bottom-2 translate-y-full left-1/2 -translate-x-1/2"}
         ${position === "left" && "top-1/2 -translate-y-1/2 -left-2 -translate-x-full"}
@@ -16,14 +16,14 @@ const Tooltip = ({
     >
       {/* TODO: Not entirely happy with left & right */}
       <div
-        className={`absolute size-4 bg-light-text-primary rounded-sm rotate-45
+        className={`absolute size-4 bg-text-primary rounded-sm rotate-45
           ${position === "top" && "-bottom-0.75 left-1/2 -translate-x-1/2"}
           ${position === "bottom" && "-top-0.75 left-1/2 -translate-x-1/2"}
           ${position === "left" && "top-1/2 -translate-y-1/2 -right-0.75"}
           ${position === "right" && "top-1/2 -translate-y-1/2 -left-0.75"}
         `}
       />
-      <span className="relative flex text-xs text-light-bg whitespace-nowrap select-none">
+      <span className="relative flex text-xs text-bg whitespace-nowrap select-none">
         {label}
       </span>
     </div>

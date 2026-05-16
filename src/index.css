@@ -59,12 +59,12 @@ textarea {
     /* Modal */
     --color-modal-bg: var(--color-surface);
     --color-modal-border: var(--color-border);
-    --radius-modal: 8px;
+    --radius-modal: 20px;
 
     /* Code Block */
     --color-codeBlock-bg: var(--color-surface);
     --color-codeBlock-border: var(--color-border);
-    --radius-codeBlock: 8px;
+    --radius-codeBlock: 18px;
 
     --font-inter: "Inter", sans-serif;
     --font-hahmlet: "Hahmlet", sans-serif;
