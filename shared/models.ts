@@ -3,19 +3,21 @@
 import { GatewayModelId } from "ai";
 
 const PROVIDER_ICONS: Record<string, string> = {
-  default: "src/assets/ai/default.svg", // Fallback icon
-  alibaba: "src/assets/ai/alibaba.svg",
-  anthropic: "src/assets/ai/anthropic.svg",
-  deepseek: "src/assets/ai/deepseek.svg",
-  google: "src/assets/ai/gemma.svg", // diff - for preference
-  meta: "src/assets/ai/meta.svg",
-  minimax: "src/assets/ai/minimax.svg",
-  mistral: "src/assets/ai/mistral.svg",
-  moonshotai: "src/assets/ai/moonshotai.svg",
-  openai: "src/assets/ai/openai.svg",
-  xai: "src/assets/ai/grok.svg", // diff - for preference
-  xiaomi: "src/assets/ai/xiaomi.svg",
-  zai: "src/assets/ai/zai.svg",
+  default: "default.png", // Fallback icon
+  alibaba: "alibaba.png",
+  anthropic: "anthropic.png",
+  deepseek: "deepseek.png",
+  google: "gemma.png", // diff - for preference
+  minimax: "minimax.png",
+  moonshotai: "moonshotai.png",
+  openai: "openai.png",
+  xiaomi: "xiaomi.png",
+  zai: "zai.png",
+};
+
+const providerIconsBaseUrl = {
+  light: "src/assets/ai/light",
+  dark: "src/assets/ai/dark",
 };
 
 export const MODELS = {
@@ -43,20 +45,28 @@ export type ModelId = keyof typeof MODELS;
 
 export const defaultModel: ModelId = "openai/gpt-oss-20b";
 
-export function getModel(model: string) {
+function getIcon(model: string) {
+  const theme = "dark";
+  const baseUrl = providerIconsBaseUrl[theme];
+
   const provider = model.split("/")[0];
+  const icon = PROVIDER_ICONS[provider] ?? PROVIDER_ICONS["default"];
+
+  return `${baseUrl}/${icon}`;
+}
+
+export function getModel(model: string) {
   const entry = MODELS[model as keyof typeof MODELS];
 
   if (!entry) {
-    const defaultProvider = defaultModel.split("/")[0];
     return {
       name: MODELS[defaultModel as keyof typeof MODELS].name,
-      icon: PROVIDER_ICONS[defaultProvider] ?? PROVIDER_ICONS["default"],
+      icon: getIcon(model),
     };
   }
 
   return {
     name: entry.name,
-    icon: PROVIDER_ICONS[provider] ?? PROVIDER_ICONS["default"],
+    icon: getIcon(model),
   };
 }
