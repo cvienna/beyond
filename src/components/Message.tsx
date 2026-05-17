@@ -27,28 +27,19 @@ const Message = ({
   const { updateMessage } = useChatStore();
   const [editMode, setEditMode] = useState(false);
   const [editContent, setEditContent] = useState(data.content);
-  const [feedbackModal, setFeedbackModal] = useState<
-    "positive" | "negative" | null
-  >(null);
+  const [feedbackModal, setFeedbackModal] = useState(false);
+  const [copied, setCopied] = useState(false);
 
-  const handleSubmit = async (
-    type: "positive" | "negative",
-    description: string | undefined,
-  ) => {
-    updateMessage(data.chatId, data.id, {
-      feedback: {
-        review: type === "positive" ? "good" : "bad",
-        note: description,
-      },
-    });
+  const handleSubmit = async (feedback: {
+    length?: "too_long" | "just_right" | "too_short";
+    tone?: "good" | "bad";
+    contentQuality?: "good" | "bad";
+    details?: string;
+  }) => {
+    updateMessage(data.chatId, data.id, { feedback });
     await client.api.message[":id"].$patch({
       param: { id: data.id },
-      json: {
-        feedback: {
-          review: type === "positive" ? "good" : "bad",
-          note: description,
-        },
-      },
+      json: { feedback },
     });
   };
 
@@ -169,6 +160,7 @@ const Message = ({
           )}
           <span className="font-light">
             <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
               components={{
                 code({ className, children }) {
                   const language = /language-(\w+)/.exec(className || "")?.[1];
@@ -269,9 +261,8 @@ const Message = ({
       )}
       {feedbackModal && (
         <Feedback
-          type={feedbackModal}
-          onSubmit={(type, description) => {
-            handleSubmit(type, description);
+          onSubmit={(feedback) => {
+            handleSubmit(feedback);
             setFeedbackModal(null);
           }}
           onCancel={() => setFeedbackModal(null)}
