@@ -5,6 +5,8 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import CodeBlock from "../CodeBlock";
 import SmallButton from "../button/SmallButton";
+import { formatRelativeDateTime, formatFullDateTime } from "@/utils/date";
+import Tooltip from "../Tooltip";
 
 const User = ({ data }: { data: Message }) => {
   const [editMode, setEditMode] = useState(false);
@@ -53,7 +55,7 @@ const User = ({ data }: { data: Message }) => {
           </div>
         ) : (
           <>
-            <div className="px-4 py-2 max-w-full bg-surface rounded-3xl border border-border overflow-x-auto">
+            <div className="px-4 py-2 max-w-full bg-surface rounded-codeBlock border border-border overflow-x-auto">
               <span className="font-light">
                 <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
@@ -75,9 +77,15 @@ const User = ({ data }: { data: Message }) => {
               </span>
             </div>
             <div className="flex justify-end items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <span className="text-sm text-text-secondary">
-                {new Date(data.createdAt).toLocaleTimeString()}
-              </span>
+              <div className="relative group/tooltip">
+                <span className="text-sm text-text-secondary">
+                  {formatRelativeDateTime(data.createdAt)}
+                </span>
+                <Tooltip
+                  label={formatFullDateTime(data.createdAt)}
+                  position="top"
+                />
+              </div>
               <SmallButton
                 className="hover:bg-bg-hover group/text-hover"
                 onClick={() => {
