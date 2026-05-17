@@ -6,6 +6,8 @@ import { useUiStore } from "@/store/ui";
 import { useEffect, useRef, useState } from "react";
 import { client } from "@/lib/client";
 import { messageResponseSchema } from "@shared/schemas/message";
+import User from "@/components/message/User";
+import Assistant from "@/components/message/Assistant";
 
 const Chat = () => {
   const { messages, setMessages } = useChatStore();
@@ -80,9 +82,13 @@ const Chat = () => {
           style={{ paddingTop: `${navbarHeight + 32}px` }}
         >
           {messages[route.chatId] &&
-            messages[route.chatId].map((m, i, arr) => (
-              <Message data={m} isLast={i === arr.length - 1} />
-            ))}
+            messages[route.chatId].map((m, i, arr) =>
+              m.role === "user" ? (
+                <User data={m} />
+              ) : (
+                <Assistant data={m} isLast={i === arr.length - 1} />
+              ),
+            )}
         </div>
         <div className="sticky bottom-0 flex bg-bg">
           <MessageInput
