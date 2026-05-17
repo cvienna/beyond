@@ -35,13 +35,12 @@ const Chat = () => {
   }, [route]);
 
   useEffect(() => {
-    scrollToBottom();
+    scrollToBottom(false);
   }, []);
 
   useEffect(() => {
     const el = messagesRef.current;
     if (!el) return;
-    console.log(el);
 
     const handleScroll = () => {
       const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 320;
@@ -54,10 +53,10 @@ const Chat = () => {
     return () => el.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToBottom = () => {
+  const scrollToBottom = (smooth: boolean) => {
     messagesRef.current?.scrollTo({
       top: messagesRef.current.scrollHeight,
-      behavior: "smooth",
+      behavior: smooth ? "smooth" : "instant",
     });
   };
 
@@ -68,24 +67,27 @@ const Chat = () => {
       <div className="flex flex-col mx-auto h-screen xl:max-w-3xl lg:max-w-2xl md:max-w-xl max-w-lg w-full">
         <div className="fixed top-0 flex flex-col w-full">
           <div
-            className="w-full bg-light-bg"
+            className="w-full bg-bg"
             style={{
               height: `${navbarHeight}px`,
             }}
           />
-          <div className="w-full h-8 bg-linear-to-b from-light-bg to-light-bg/1" />
+          <div className="w-full h-8 bg-linear-to-b from-bg to-bg/1" />
         </div>
 
-        <div className="flex flex-col flex-1 gap-8 pb-24">
+        <div
+          className="flex flex-col flex-1 gap-8 pb-24"
+          style={{ paddingTop: `${navbarHeight + 32}px` }}
+        >
           {messages[route.chatId] &&
             messages[route.chatId].map((m, i, arr) => (
               <Message data={m} isLast={i === arr.length - 1} />
             ))}
         </div>
-        <div className="sticky bottom-0 flex bg-light-bg">
+        <div className="sticky bottom-0 flex bg-bg">
           <MessageInput
             size="lg"
-            onReturn={isBottom ? undefined : scrollToBottom}
+            onReturn={isBottom ? undefined : () => scrollToBottom(true)}
             inline
           />
         </div>
