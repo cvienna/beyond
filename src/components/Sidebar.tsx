@@ -73,7 +73,7 @@ const Sidebar = () => {
           <div className="flex flex-col gap-1 px-2">
             <button
               onClick={() => navigate({ page: "home" })}
-              className={`flex gap-3 items-center p-2 w-full rounded-[14px] transition-colors hover:text-text-primary
+              className={`flex gap-3 items-center p-2 w-full rounded-button transition-colors hover:text-text-primary
               ${route.page === "home" ? "bg-surface-hover text-text-primary" : "text-text-secondary hover:bg-surface-hover"}
             `}
             >
@@ -97,7 +97,7 @@ const Sidebar = () => {
                   <button
                     key={c.id}
                     onClick={() => navigate({ page: "chat", chatId: c.id })}
-                    className={`flex gap-3 items-center p-2 h-9 w-full rounded-[14px] hover:text-text-primary transition-colors group
+                    className={`flex gap-3 items-center p-2 h-9 w-full rounded-button hover:text-text-primary transition-colors group
                       ${
                         chatMenu === c.id ||
                         (route.page === "chat" && route.chatId === c.id)
@@ -113,7 +113,7 @@ const Sidebar = () => {
                         e.stopPropagation();
                         setChatMenu((prev) => (prev === c.id ? null : c.id));
                       }}
-                      className={`absolute -translate-y-1/2 right-0 top-1/2 flex p-2.25 bg-surface-hover rounded-[14px] transition-opacity
+                      className={`absolute -translate-y-1/2 right-0 top-1/2 flex p-2.25 bg-surface-hover rounded-button transition-opacity
                         ${chatMenu !== c.id && "opacity-0 group-hover:opacity-100"}
                       `}
                     >
@@ -132,14 +132,14 @@ const Sidebar = () => {
                               e.stopPropagation();
                               setChatRename(c.id);
                             }}
-                            className="flex items-center gap-2 px-2.5 py-1.5 text-text-secondary rounded-2xl hover:bg-surface-hover hover:text-text-primary transition-colors"
+                            className="flex items-center gap-2 px-2.5 py-1.5 text-text-secondary rounded-button hover:bg-surface-hover hover:text-text-primary transition-colors"
                           >
                             <Pencil className="size-4.5" />
                             <span className="text-[15px]">Rename</span>
                           </button>
                           <button
                             onClick={(e) => e.stopPropagation()}
-                            className="flex items-center gap-2 px-2.5 py-1.5 text-text-secondary rounded-2xl hover:bg-surface-hover hover:text-text-primary transition-colors"
+                            className="flex items-center gap-2 px-2.5 py-1.5 text-text-secondary rounded-button hover:bg-surface-hover hover:text-text-primary transition-colors"
                           >
                             <Smile className="size-4.5" />
                             <span className="text-[15px]">Change Icon</span>
@@ -151,7 +151,7 @@ const Sidebar = () => {
                               e.stopPropagation();
                               handleDeleteChat(c.id);
                             }}
-                            className="flex items-center gap-2 px-2.5 py-1.5 text-red-400/70 rounded-2xl hover:bg-surface-hover hover:text-red-400 transition-colors"
+                            className="flex items-center gap-2 px-2.5 py-1.5 text-red-400/70 rounded-button hover:bg-surface-hover hover:text-red-400 transition-colors"
                           >
                             <Package className="size-4.5" />
                             <span className="text-[15px]">Archive</span>
@@ -165,7 +165,7 @@ const Sidebar = () => {
           </div>
         </div>
         <div className="px-2 py-3">
-          <button className="flex gap-3 items-center p-2 w-full rounded-[14px] hover:bg-surface-hover text-text-secondary hover:text-text-primary transition-colors">
+          <button className="flex gap-3 items-center p-2 w-full rounded-button hover:bg-surface-hover text-text-secondary hover:text-text-primary transition-colors">
             <Settings className="size-4.75" />
             <span className="text-sm">Settings</span>
           </button>

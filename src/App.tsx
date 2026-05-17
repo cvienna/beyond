@@ -9,7 +9,7 @@ function App() {
   const { route, sidebar } = useUiStore();
 
   return (
-    <main className="flex bg-light-bg text-light-text-primary">
+    <main className="flex bg-bg text-text-primary theme-dev dark">
       {sidebar && <Sidebar />}
       <Navbar width={256} />
       <div className="flex flex-1 flex-col h-screen overflow-y-auto">

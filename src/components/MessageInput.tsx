@@ -138,7 +138,7 @@ const MessageInput = ({
                       <button
                         key={id}
                         onClick={() => setModel(target, id as ModelId)}
-                        className={`flex items-center gap-2.5 px-2 py-2 rounded-2xl
+                        className={`flex items-center gap-2.5 px-2 py-2 rounded-button
                           ${id === data[target].model ? "bg-surface-hover" : "hover:bg-surface-hover"}
                         `}
                       >

@@ -11,7 +11,7 @@ const Menu = forwardRef<
   return (
     <div
       ref={ref}
-      className={`absolute z-100 flex flex-col gap-1 p-2 w-48 rounded-3xl bg-surface border border-border
+      className={`absolute z-100 flex flex-col gap-2 p-2 w-48 max-h-64 rounded-codeBlock bg-surface border border-border overflow-y-auto hide-scrollbar cursor-default
         ${alignment === "top" && "-translate-y-full -top-2"}
         ${alignment === "bottom" && "translate-y-full -bottom-2"}
         ${offset === "start" && "left-0"}
@@ -21,7 +21,7 @@ const Menu = forwardRef<
       {groups.map((group, i, arr) => (
         <React.Fragment key={i}>
           {group}
-          {i !== arr.length - 1 && <div className="h-px w-full bg-border" />}
+          {i !== arr.length - 1 && <div className="w-full pb-px bg-border" />}
         </React.Fragment>
       ))}
     </div>
