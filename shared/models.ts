@@ -22,6 +22,8 @@ export const MODELS = {
   "moonshotai/kimi-k2.6": { name: "Kimi K2.6" },
   "moonshotai/kimi-k2.5": { name: "Kimi K2.5" },
 
+  "minimax/minimax-m2.7": { name: "MiniMax M2.7" },
+
   "zai/glm-5.1": { name: " GLM 5.1" },
   "zai/glm-5": { name: "GLM 5" },
 
