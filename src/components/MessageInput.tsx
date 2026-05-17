@@ -12,11 +12,11 @@ import { useMessageInputStore } from "@/store/messageInput";
 import { useUiStore } from "@/store/ui";
 import { getModel, ModelId } from "@shared/models";
 import { useCompletionStore } from "@/store/completion";
-import Tooltip from "./Tooltip";
 import { useStreamingStore } from "@/store/streaming";
 import Menu from "./menu/Menu";
 import MenuGroup from "./menu/Group";
 import { getGroupedModels } from "@/utils/models";
+import SmallButton from "./button/SmallButton";
 
 const MessageInput = ({
   size,
@@ -85,36 +85,46 @@ const MessageInput = ({
       </div>
       <div className="flex justify-between px-3.75 pb-3.75 w-full">
         <div className="flex items-center gap-2">
-          <button className="relative flex gap-2 items-center p-1.5 rounded-button cursor-pointer hover:bg-surface-hover transition-colors group/text-hover group/tooltip">
-            <Plus className="size-4.5 text-text-secondary group-hover/text-hover:text-text-primary" />
-            <Tooltip label="More" position="top" />
-          </button>
-          <button
-            className={`relative flex gap-2 items-center px-1.5 h-7.5 rounded-button select-none cursor-pointer transition-colors group/text-hover group/tooltip
-              ${data[target].search ? "bg-blue-200/30 text-blue-600/65" : "hover:bg-surface-hover"}
-            `}
-            onClick={() => toggleSearch(target)}
-          >
-            <Search
-              className={`size-4.5
+          <SmallButton
+            className="hover:bg-surface-hover group/text-hover"
+            icon={
+              <Plus className="size-4.5 text-text-secondary group-hover/text-hover:text-text-primary" />
+            }
+            label={{ content: "More", tooltip: true, position: "top" }}
+            onClick={() => null}
+          />
+          <SmallButton
+            className={
+              data[target].search
+                ? "bg-blue-200/30 text-blue-600/65"
+                : "hover:bg-surface-hover group/text-hover"
+            }
+            icon={
+              <Search
+                className={`size-4.5
                 ${data[target].search ? "text-blue-600/65" : "text-text-secondary group-hover/text-hover:text-text-primary"}
               `}
-            />
-            <Tooltip label="Search" position="top" />
-          </button>
-          <button
-            className={`relative flex gap-2 items-center px-1.5 h-7.5 rounded-button select-none cursor-pointer transition-colors group/text-hover group/tooltip
-              ${data[target].reasoning ? "bg-blue-200/30 text-blue-600/65" : "hover:bg-surface-hover"}
-            `}
-            onClick={() => toggleReasoning(target)}
-          >
-            <Clock
-              className={`size-4.5
+              />
+            }
+            label={{ content: "Search", tooltip: true, position: "top" }}
+            onClick={() => toggleSearch(target)}
+          />
+          <SmallButton
+            className={
+              data[target].reasoning
+                ? "bg-blue-200/30 text-blue-600/65"
+                : "hover:bg-surface-hover group/text-hover"
+            }
+            icon={
+              <Clock
+                className={`size-4.5
                 ${data[target].reasoning ? "text-blue-600/65" : "text-text-secondary group-hover/text-hover:text-text-primary"}
               `}
-            />
-            <Tooltip label="Reasoning" position="top" />
-          </button>
+              />
+            }
+            label={{ content: "Reasoning", tooltip: true, position: "top" }}
+            onClick={() => toggleReasoning(target)}
+          />
         </div>
         <div className="relative flex items-center gap-2">
           {modelDropdown && (
@@ -143,41 +153,42 @@ const MessageInput = ({
               ]}
             />
           )}
-
-          <div
+          <SmallButton
+            className="hover:bg-surface-hover group/text-hover"
+            icon={<img src={currentModel.icon} className="size-5" />}
+            label={{ content: currentModel.name, tooltip: false }}
             onClick={(e) => {
               e.stopPropagation();
               setModelDropdown((prev) => !prev);
             }}
-            className="select-none flex gap-2 items-center px-1.5 h-7.5 rounded-button cursor-pointer hover:bg-surface-hover transition-colors"
-          >
-            <img src={currentModel.icon} className="size-5" />
-            <span className="pr-1.5 text-sm text-text-secondary">
-              {currentModel.name}
-            </span>
-          </div>
-          <button
+          />
+          <SmallButton
+            className={
+              isStreaming
+                ? "bg-surface-hover text-text-secondary"
+                : "bg-text-primary text-bg"
+            }
+            icon={
+              isStreaming ? (
+                <LoaderCircle className="size-4.5 animate-spin" />
+              ) : (
+                <ArrowUp className="size-4.5" />
+              )
+            }
             onClick={handleSubmit}
-            disabled={isStreaming}
-            className={`p-1.5 rounded-full cursor-pointer
-              ${isStreaming ? "bg-surface-hover text-text-secondary" : "bg-text-primary text-bg"}
-            `}
-          >
-            {isStreaming ? (
-              <LoaderCircle className="size-4.5 animate-spin" />
-            ) : (
-              <ArrowUp className="size-4.5" />
-            )}
-          </button>
+          />
         </div>
       </div>
       {onReturn && (
-        <button
+        <SmallButton
+          className={`absolute left-1/2 -translate-x-1/2 -top-3 -translate-y-full
+              bg-surface text-text-secondary
+              border border-border
+              hover:bg-surface-hover hover:text-text-primary
+            `}
+          icon={<ArrowDown className="size-4.5" />}
           onClick={onReturn}
-          className="absolute left-1/2 -translate-x-1/2 -top-3 -translate-y-full p-1.5 bg-surface text-text-secondary border border-border rounded-button hover:bg-surface-hover hover:text-text-primary transition-colors"
-        >
-          <ArrowDown className="size-4.5" />
-        </button>
+        />
       )}
     </div>
   );
