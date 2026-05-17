@@ -3,6 +3,7 @@ import { constants } from "@shared/constants";
 import { useUiStore } from "@/store/ui";
 import Tooltip from "./Tooltip";
 import { useChatStore } from "@/store/chat";
+import SmallButton from "./button/SmallButton";
 
 const Navbar = ({ width }: { width: number }) => {
   const { route, navigate, sidebar, toggleSidebar } = useUiStore();
@@ -37,22 +38,22 @@ const Navbar = ({ width }: { width: number }) => {
             : { width: "100%" }
         }
       >
-        <button
+        <SmallButton
+          className={`text-text-secondary
+            hover:bg-surface-hover hover:text-text-primary`}
+          icon={<SidebarIcon className="size-4.5" />}
+          label={{ content: "Sidebar", tooltip: true, position: "bottom" }}
           onClick={toggleSidebar}
-          className="relative p-1.5 text-text-secondary rounded-full hover:bg-surface-hover hover:text-text-primary transition-colors group/tooltip"
-        >
-          <SidebarIcon className="size-4.5" />
-          <Tooltip label="Sidebar" position="bottom" />
-        </button>
+        />
         {!sidebar && currentChat && (
           <>
-            <button
+            <SmallButton
+              className={`text-text-secondary
+                hover:bg-surface-hover hover:text-text-primary`}
+              icon={<SquarePen className="size-4.5" />}
+              label={{ content: "New chat", tooltip: true, position: "bottom" }}
               onClick={() => navigate({ page: "home" })}
-              className="relative p-1.5 text-text-secondary rounded-full hover:bg-surface-hover hover:text-text-primary transition-colors group/tooltip"
-            >
-              <SquarePen className="size-4.5" />
-              <Tooltip label="New Chat" position="bottom" />
-            </button>
+            />
             <span className="pl-1 text-sm text-text-secondary">
               {currentChat.title}
             </span>
