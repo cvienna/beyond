@@ -185,7 +185,7 @@ const Sidebar = () => {
       {sidebar && (
         <div
           onClick={toggleSidebar}
-          className="fixed inset-0 bg-linear-to-r from-neutral-500/50 to-neutral-500/1 lg:hidden z-90"
+          className="fixed inset-0 bg-linear-to-r from-bg to-bg/1 lg:hidden z-90"
         />
       )}
     </>
