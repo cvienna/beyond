@@ -22,13 +22,13 @@ const User = ({ data }: { data: Message }) => {
     >
       <div className="flex flex-col items-end gap-4 w-full group">
         {editMode ? (
-          <div className="flex flex-col gap-3 p-3 w-full bg-surface rounded-3xl border border-border">
+          <div className="flex flex-col gap-3 p-3 w-full bg-surface rounded-modal border border-border">
             <div>
               <textarea
                 onChange={(e) => setEditContent(e.target.value)}
                 value={editContent}
                 placeholder="Better get it right this time"
-                className="flex px-3.5 py-2 w-full bg-surface-hover text-[15px] font-light rounded-2xl outline-none border border-border resize-none field-sizing-content placeholder:text-text-secondary"
+                className="flex px-3.5 py-2 w-full bg-surface-hover text-[15px] font-light rounded-modal-select outline-none border border-border resize-none field-sizing-content placeholder:text-text-secondary"
               />
             </div>
             <div className="flex justify-between gap-4">
@@ -43,11 +43,11 @@ const User = ({ data }: { data: Message }) => {
               <div className="flex gap-2">
                 <button
                   onClick={() => setEditMode(false)}
-                  className="px-5 py-1.5 bg-surface rounded-2xl border border-border cursor-pointer hover:bg-surface-hover transition-colors"
+                  className="px-5 py-1.5 bg-surface rounded-modal-button border border-border cursor-pointer hover:bg-surface-hover transition-colors"
                 >
                   <span className="text-[15px]">Cancel</span>
                 </button>
-                <button className="px-5 py-1.5 bg-text-primary rounded-2xl cursor-pointer">
+                <button className="px-5 py-1.5 bg-text-primary rounded-modal-button cursor-pointer">
                   <span className="text-[15px] text-bg">Submit</span>
                 </button>
               </div>
