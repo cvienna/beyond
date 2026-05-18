@@ -10,7 +10,11 @@ const SmallButton = ({
   icon: React.ReactNode;
   label?:
     | { content: string; tooltip: false }
-    | { content: string; tooltip: true; position: "top" | "bottom" };
+    | {
+        content: string;
+        tooltip: true;
+        position: "top" | "bottom" | "left" | "right";
+      };
   onClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   className?: string;
   disabled?: boolean;
