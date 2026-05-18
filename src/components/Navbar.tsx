@@ -1,4 +1,4 @@
-import { SidebarIcon, SquarePen } from "lucide-react";
+import { Ghost, SidebarIcon, SquarePen } from "lucide-react";
 import { constants } from "@shared/constants";
 import { useUiStore } from "@/store/ui";
 import Tooltip from "./Tooltip";
@@ -23,7 +23,7 @@ const Navbar = ({ width }: { width: number }) => {
 
   return (
     <div
-      className="fixed top-0 right-0 flex items-center z-100"
+      className="fixed top-0 right-0 flex items-center justify-between z-100"
       id="draggable"
       style={{
         left: `${trafficLightOffset}px`,
@@ -38,6 +38,15 @@ const Navbar = ({ width }: { width: number }) => {
             : { width: "100%" }
         }
       >
+        {route.page === "home" && (
+          <SmallButton
+            className={`text-text-secondary
+            hover:bg-surface-hover hover:text-text-primary`}
+            icon={<Ghost className="size-4.5" />}
+            label={{ content: "Incognito", tooltip: true, position: "bottom" }}
+            onClick={() => null}
+          />
+        )}
         <SmallButton
           className={`text-text-secondary
             hover:bg-surface-hover hover:text-text-primary`}
