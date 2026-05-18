@@ -6,11 +6,13 @@ const Select = ({
   choices,
   optional,
   onSelect,
+  selected,
 }: {
   label: string;
-  choices: { id: string; label: string }[];
+  choices: Record<string, string>; // id -> name
   optional: boolean;
-  onSelect: (choice: string) => void;
+  onSelect: (choice?: string) => void;
+  selected?: string;
 }) => {
   const [selectMenu, setSelectMenu] = useState(false);
 
@@ -23,8 +25,12 @@ const Select = ({
           ${selectMenu ? "bg-surface-hover" : "bg-surface hover:bg-surface-hover"}
         `}
       >
-        <span className="font-normal text-text-secondary select-none">
-          Select
+        <span
+          className={`font-normal select-none
+          ${selected ? "text-text-primary" : "text-text-secondary"}
+        `}
+        >
+          {choices[selected!] ?? "Select"}
         </span>
         <ChevronRight
           className={`size-4.5 transition-transform
@@ -39,15 +45,26 @@ const Select = ({
             className="fixed inset-0 z-90"
           />
           <div className="absolute -bottom-1 translate-y-full flex flex-col gap-2 p-2 w-full bg-modal-bg border border-modal-border rounded-modal z-100">
-            {choices.map((c) => (
+            {optional && (
               <button
                 onClick={() => {
-                  onSelect(c.id);
+                  onSelect(undefined);
                   setSelectMenu(false);
                 }}
                 className="flex px-3.5 py-1.75 rounded-modal-select hover:bg-surface-hover transition-colors"
               >
-                <span>{c.label}</span>
+                <span>None</span>
+              </button>
+            )}
+            {Object.keys(choices).map((c) => (
+              <button
+                onClick={() => {
+                  onSelect(c);
+                  setSelectMenu(false);
+                }}
+                className="flex px-3.5 py-1.75 rounded-modal-select hover:bg-surface-hover transition-colors"
+              >
+                <span>{choices[c]}</span>
               </button>
             ))}
           </div>
@@ -86,40 +103,63 @@ const Feedback = ({
         className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-4 px-6 py-5 w-xl bg-modal-bg rounded-modal border border-modal-border"
       >
         <h1 className="text-[22px]">Give feedback</h1>
+        {/* Todo: Do something cleaner with generics instead of type casting, even though it's fine. */}
         <Select
           label="Message length 😉"
-          choices={[
-            { id: "too_long", label: "Too long" },
-            { id: "just_right", label: "Just right" },
-            { id: "too_short", label: "Too short" },
-          ]}
+          choices={{
+            too_long: "Too long",
+            just_right: "Just right",
+            too_short: "Too short",
+          }}
           optional
-          onSelect={() => null}
+          onSelect={(choice) =>
+            setFeedback({
+              ...feedback,
+              length: choice as
+                | "too_long"
+                | "just_right"
+                | "too_short"
+                | undefined,
+            })
+          }
+          selected={feedback?.length}
         />
         <Select
           label="Tone"
-          choices={[
-            { id: "good", label: "Excellent" },
-            { id: "bad", label: "Poor" },
-          ]}
+          choices={{
+            good: "Good",
+            bad: "Bad",
+          }}
           optional
-          onSelect={() => null}
+          onSelect={(choice) =>
+            setFeedback({
+              ...feedback,
+              tone: choice as "good" | "bad" | undefined,
+            })
+          }
+          selected={feedback?.tone}
         />
         <Select
           label="Content quality"
-          choices={[
-            { id: "good", label: "Excellent" },
-            { id: "bad", label: "Poor" },
-          ]}
+          choices={{
+            good: "Good",
+            bad: "Bad",
+          }}
           optional
-          onSelect={() => null}
+          onSelect={(choice) =>
+            setFeedback({
+              ...feedback,
+              contentQuality: choice as "good" | "bad" | undefined,
+            })
+          }
+          selected={feedback?.contentQuality}
         />
         <div className="flex flex-col gap-2">
           <span>Details</span>
           <textarea
             value={feedback?.details ?? ""}
             onChange={(e) =>
-              setFeedback((prev) => ({ ...prev, details: e.target.value }))
+              setFeedback({ ...feedback, details: e.target.value })
             }
             className="px-4.5 py-3 min-h-19 max-h-49 bg-surface focus:bg-surface-hover placeholder:text-text-secondary rounded-modal-textArea outline-none border border-border resize-none field-sizing-content hide-scrollbar transition-colors"
             placeholder="What was unique about this response?"
