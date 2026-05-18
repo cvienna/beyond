@@ -60,6 +60,9 @@ textarea {
     --color-modal-bg: var(--color-surface);
     --color-modal-border: var(--color-border);
     --radius-modal: 20px;
+    --radius-modal-select: 16px;
+    --radius-modal-textArea: 24px;
+    --radius-modal-button: 16px;
 
     /* Code Block */
     --color-codeBlock-bg: var(--color-surface);
@@ -96,6 +99,9 @@ textarea {
     --color-modal-bg: var(--color-surface);
     --color-modal-border: var(--color-border);
     --radius-modal: 20px;
+    --radius-modal-select: 16px;
+    --radius-modal-textArea: 24px;
+    --radius-modal-button: 16px;
 
     /* Code Block */
     --color-codeBlock-bg: var(--color-surface);
@@ -112,6 +118,9 @@ textarea {
 
     /* Modal */
     --radius-modal: 8px;
+    --radius-modal-select: 4px;
+    --radius-modal-textArea: 8px;
+    --radius-modal-button: 4px;
 
     /* Code Block */
     --radius-codeBlock: 8px;

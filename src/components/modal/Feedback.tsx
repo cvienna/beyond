@@ -19,7 +19,7 @@ const Select = ({
       <span>{label}</span>
       <button
         onClick={() => setSelectMenu(!selectMenu)}
-        className={`flex justify-between items-center px-4.5 py-2.25 rounded-2xl border border-modal-border transition-colors
+        className={`flex justify-between items-center px-4.5 py-2.25 rounded-modal-select border border-modal-border transition-colors
           ${selectMenu ? "bg-surface-hover" : "bg-surface hover:bg-surface-hover"}
         `}
       >
@@ -45,7 +45,7 @@ const Select = ({
                   onSelect(c.id);
                   setSelectMenu(false);
                 }}
-                className="flex px-3.5 py-1.75 rounded-2xl hover:bg-surface-hover transition-colors"
+                className="flex px-3.5 py-1.75 rounded-modal-select hover:bg-surface-hover transition-colors"
               >
                 <span>{c.label}</span>
               </button>
@@ -83,7 +83,7 @@ const Feedback = ({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-4 px-6 py-5 w-xl bg-modal-bg rounded-[28px] border border-modal-border"
+        className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col gap-4 px-6 py-5 w-xl bg-modal-bg rounded-modal border border-modal-border"
       >
         <h1 className="text-[22px]">Give feedback</h1>
         <Select
@@ -121,14 +121,14 @@ const Feedback = ({
             onChange={(e) =>
               setFeedback((prev) => ({ ...prev, details: e.target.value }))
             }
-            className="px-4.5 py-3 min-h-19 max-h-49 bg-surface focus:bg-surface-hover placeholder:text-text-secondary rounded-3xl outline-none border border-border resize-none field-sizing-content hide-scrollbar transition-colors"
+            className="px-4.5 py-3 min-h-19 max-h-49 bg-surface focus:bg-surface-hover placeholder:text-text-secondary rounded-modal-textArea outline-none border border-border resize-none field-sizing-content hide-scrollbar transition-colors"
             placeholder="What was unique about this response?"
           />
         </div>
         <div className="flex justify-end gap-2 w-full">
           <button
             onClick={onCancel}
-            className="px-5 py-1.5 bg-surface rounded-2xl border border-border cursor-pointer hover:bg-bg-hover transition-colors"
+            className="px-5 py-1.5 bg-surface rounded-modal-button border border-border cursor-pointer hover:bg-bg-hover transition-colors"
           >
             <span className="text-[15px]">Cancel</span>
           </button>
@@ -137,7 +137,7 @@ const Feedback = ({
               if (feedback) onSubmit(feedback);
               else onCancel();
             }}
-            className="px-5 py-1.5 bg-text-primary rounded-2xl cursor-pointer"
+            className="px-5 py-1.5 bg-text-primary rounded-modal-button cursor-pointer"
           >
             <span className="text-[15px] text-bg">Submit</span>
           </button>
