@@ -81,6 +81,46 @@ const Assistant = ({
                   <td className="border border-border px-4 py-2">{children}</td>
                 );
               },
+              p({ children }) {
+                return <p className="mb-3 leading-relaxed">{children}</p>;
+              },
+              h1({ children }) {
+                return (
+                  <h1 className="text-xl font-semibold mt-4 mb-2">
+                    {children}
+                  </h1>
+                );
+              },
+              h2({ children }) {
+                return (
+                  <h2 className="text-lg font-semibold mt-4 mb-2">
+                    {children}
+                  </h2>
+                );
+              },
+              h3({ children }) {
+                return <h3 className="font-semibold mt-3 mb-1">{children}</h3>;
+              },
+              ul({ children }) {
+                return (
+                  <ul className="list-disc list-inside mb-3 space-y-1">
+                    {children}
+                  </ul>
+                );
+              },
+              ol({ children }) {
+                return (
+                  <ol className="list-decimal list-inside mb-3 space-y-1">
+                    {children}
+                  </ol>
+                );
+              },
+              li({ children }) {
+                return <li className="ml-2">{children}</li>;
+              },
+              strong({ children }) {
+                return <strong className="font-medium">{children}</strong>;
+              },
             }}
           >
             {data.content}
